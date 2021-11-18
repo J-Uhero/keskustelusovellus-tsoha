@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<title>keskustelusovellus - {% block title %}{% endblock %}</title>
+<h1>Keskustelusovellus</h1>
+{% if session.username %}
+    Käyttäjä: {{session.username}}<br>
+    <a href="/">Etusivu</a>
+    <a href="/profile">Profiili</a>
+    <a href="/messages">Viestit</a>
+    <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+    <a href="/login"> kirjaudu sisään </a> tai
+    <a href="/register"> luo tunnus </a>
+{% endif %}
+<hr>
+{% block content %}{% endblock %}
+<hr>

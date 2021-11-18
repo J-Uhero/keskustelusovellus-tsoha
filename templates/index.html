@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<title>keskustelusovellus</title>
-<h1>Keskustelusovellus</h1>
-{% if session.username %}
-    Terveruloa {{session.username}}!
-{% else %}
-    <a href="/login"> kirjaudu sisään </a> tai
-    <a href="/register"> luo tunnus </a>
-{% endif %}
+{% extends "layout.html" %}
+{% block content %}
+    Tervetuloa {{session.username}}!
+{% endblock %}

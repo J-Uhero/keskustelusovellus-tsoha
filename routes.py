@@ -33,11 +33,7 @@ def register():
             return render_template("register.html",
                                     message="käyttäjänimi ei kelpaa")
 
-
-"""@app.route("/result", methods=["POST"])
-def result():
-    name = request.form["name"]
-    password = request.form["password"]
-    return render_template("result.html",
-                            name=name,
-                            password=password)"""
+@app.route("/logout")
+def logout():
+    users.logout()
+    return render_template("logout.html")

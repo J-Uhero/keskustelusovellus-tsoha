@@ -1,16 +1,17 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
 <form action="/register" method="POST">
+<p>
+    Luo käyttäjätunnus
 <p>
     {{message}}<br>
 <p>
-    Annan käyttäjänimi:<br>
+    käyttäjänimi:<br>
     <input type="text" name="username" size="20"><br>
 <p>
-    Anna salasana:<br>
+    salasana:<br>
     <input type="password" name="password" size="20"><br>
 <p>
     <input type="submit" name="vahvista" size="20"><br>
-<p>
-    <a href="/login"> kirjaudu sisään </a>
-
 </form>
+{% endblock %}

@@ -1,5 +1,8 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
 <form action="/login" method="POST">
+<p>
+    Kirjaudu sisään
 <p>
     {{message}}<br>
 <p>
@@ -11,6 +14,5 @@
 <p>
     <input type="submit" name="kirjaudu" size="20">
 <br>
-<p>
-    <a href="/register"> luo tunnus </a>
 </form>
+{% endblock %}
