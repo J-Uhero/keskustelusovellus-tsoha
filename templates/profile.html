@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+    Käyttäjänimi: {{session["username"]}}<br>
+    Viestejä: {{messages}} kpl
+</p>
+{% endblock %}

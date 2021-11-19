@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+    {{name}}
+</p>
+<p>
+    Keskustelut:
+</p>
+<nav>
+{% for t in topic %}
+<li>    <a href="/forum/{{forum_id}}/{{ t.id }}"> {{t.topic}} </a> <br>
+{% endfor %}
+</nav>
+
+{% endblock %}

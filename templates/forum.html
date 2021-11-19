@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+    {{message}}
+</p>
+<p>
+    Foorumin aihealueet:
+</p>
+<nav>
+{% for forum in forums %}
+<li>    <a href="/forum/{{ forum.id }}"> {{forum.topic}} </a> <br>
+{% endfor %}
+</nav>
+
+{% endblock %}

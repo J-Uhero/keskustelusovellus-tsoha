@@ -1,4 +1,5 @@
 from app import app
+import boards
 from flask import redirect, render_template, request, session
 import users
 
@@ -37,3 +38,22 @@ def register():
 def logout():
     users.logout()
     return render_template("logout.html")
+
+@app.route("/forum", methods=["GET", "POST"])
+def forum():
+    forums = boards.get_forums()
+    return render_template("forum.html", forums=forums)
+
+@app.route("/forum/<int:id>", methods=["GET", "POST"])
+def topics(id):
+    print("printataan id:", id)
+    topic = boards.get_topics(id)
+    #name =request.form["forum.topic"]
+    return render_template("topics.html", topic=topic, forum_id=id)
+
+@app.route("/profile", methods=["GET"])
+def profile():
+    print("haetaan tietokannasta viestit")
+    messages = users.count_users_messages()
+    print("viestejä:", messages)
+    return render_template("profile.html", messages=messages)
