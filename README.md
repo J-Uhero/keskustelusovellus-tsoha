@@ -2,7 +2,7 @@
 
 ## Keskustelusovellus
 
-[Linkki sovellukseen Herokussa]](https://tsoha-fngforum.herokuapp.com/)
+[Linkki sovellukseen Herokussa](https://tsoha-fngforum.herokuapp.com/)
 
 ### Yleiskuvaus
 Sovellus sisältää keskustelufoorumin, jota käyttääkseen on luotava käyttäjätunnus. Keskustelufoorumi koostuu eri aihealuein rajatuista viestiketjualueista. Käyttäjä voi luoda alueille omia keskustelulankoja, joihin voi kirjoittaa viestejä ja keskustella aihepiiriin liittyen.
