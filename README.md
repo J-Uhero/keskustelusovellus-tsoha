@@ -9,7 +9,7 @@ Sovellus sisältää keskustelufoorumin, jota käyttääkseen on luotava käytt�
 
 ### Sovelluksen tila (21.11.2021)
 Tällä hetkellä sovellukseen on luotu karkeimmat perusominaisuudet:
-* kirjautumis- ja rekisteröitymistoiminto (äyttäjä- ja ylläpitäjäprofiileja ei ole vielä eriytetty)
+* kirjautumis- ja rekisteröitymistoiminto (käyttäjä- ja ylläpitäjäprofiileja ei ole vielä eriytetty)
 * kirjauduttua mahdollisuus tarkastella profiilisivua, jossa näkyy käyttäjänimi ja viestimäärä
 * kirjauduttua mahdollisuus mennä keskustelualueelle, jonne voi luoda omia aihealueita ja siirtyä aihealueiden omille sivuille (samannimisiä alueita ei voi luoda)
 * aihealueiden sivuilla mahdollisuus luoda omia keskustelulankoja
