@@ -6,10 +6,19 @@
 <p>
     Keskustelut:
 </p>
-<nav>
-{% for t in topic %}
-<li>    <a href="/forum/{{forum_id}}/{{ t.id }}"> {{t.topic}} </a> <br>
+<ul>
+{% for topic in topics %}
+<li>    <a href="/forum/{{forum_id}}/{{topic.id}}"> {{topic.topic}} </a> <br>
 {% endfor %}
-</nav>
+</ul>
+<p>
+    {% if session.username %}<br>
+    Luo uusi keskustelualue<br>
+    <form action="/forum/{{forum_id}}" method="POST">
+        <input type="text" name="sub_topic" size="20"><br>
+    </form>
+    {{message}}
+    {% endif %}
+</p>
 
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+    {% for m in messages%}
+    {{m.name}} {{m.timestamp}}<br>
+    {{m.content}}<br>
+    <br>
+    {% endfor %}
+</p>
+<p>
+    <form action="/forum/{{topic_id}}/{{topic_id}}" method="POST">
+        <textarea name="message"></textarea>
+        <input type="submit" value="Lähetä">
+    </form>
+</p>
+{% endblock %}

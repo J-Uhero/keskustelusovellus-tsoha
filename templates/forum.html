@@ -6,10 +6,17 @@
 <p>
     Foorumin aihealueet:
 </p>
-<nav>
+<ul>
 {% for forum in forums %}
 <li>    <a href="/forum/{{ forum.id }}"> {{forum.topic}} </a> <br>
 {% endfor %}
-</nav>
-
+</ul>
+<p>
+    {% if session.username %}<br>
+    Luo uusi keskustelualue<br>
+    <form action="/forum" method="POST">
+        <input type="text" name="main_topic" size="20"><br>
+    </form>
+    {% endif %}
+</p>
 {% endblock %}

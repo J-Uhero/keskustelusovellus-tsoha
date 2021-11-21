@@ -42,14 +42,55 @@ def logout():
 @app.route("/forum", methods=["GET", "POST"])
 def forum():
     forums = boards.get_forums()
-    return render_template("forum.html", forums=forums)
+    if request.method == "GET":
+        return render_template("forum.html", forums=forums)
+    if request.method == "POST":
+        main_topic = request.form["main_topic"]
+        if boards.create_new_forum(main_topic):
+            return redirect("/forum")
+        else:
+            message = "Aihealue ei kelvannut"
+            return render_template("forum.html",
+                                    forums=forums,
+                                    message=message)
 
 @app.route("/forum/<int:id>", methods=["GET", "POST"])
 def topics(id):
-    print("printataan id:", id)
-    topic = boards.get_topics(id)
-    #name =request.form["forum.topic"]
-    return render_template("topics.html", topic=topic, forum_id=id)
+    topics = boards.get_topics(id)
+    if request.method == "GET":
+        return render_template("topics.html", topics=topics, forum_id=id)
+    if request.method == "POST":
+        sub_topic = request.form["sub_topic"]
+        if boards.create_new_topic(sub_topic, id):
+            return redirect(f"/forum/{id}")
+        else:
+            message = "Keskustelu ei kelvannut"
+            return render_template("topic.html",
+                                    topics=topics,
+                                    forum_id=id,
+                                    message=message)
+
+@app.route("/forum/<int:id>/<int:id2>", methods=["GET", "POST"])
+def thread(id, id2):
+    messages = boards.get_thread(id2)
+    if request.method == "GET":
+        print("viestit",messages)
+        print("id:t", id, id2)
+        return render_template("thread.html",
+                                messages=messages,
+                                forum_id=id,
+                                topic_id=id2)
+    if request.method == "POST":
+        content = request.form["message"]
+        print("viesti", content)
+        tf = boards.create_new_message(content, id2)
+        print("onnistuiko viestin lisäys", tf)
+        if tf:
+            print("onnistui redirect/",id,id2)
+            return redirect(f"/forum/{id}/{id2}")
+        else:
+            print("viestin lisääminen ei onnistunut")
+
 
 @app.route("/profile", methods=["GET"])
 def profile():
