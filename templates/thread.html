@@ -2,7 +2,7 @@
 {% block content %}
 <p>
     {% for m in messages%}
-    {{m.name}} {{m.timestamp}}<br>
+    {{m.name}} {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
     {{m.content}}<br>
     <br>
     {% endfor %}

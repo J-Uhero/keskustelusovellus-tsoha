@@ -46,3 +46,9 @@ def create_new_message(content, topic_id):
     except:
         return False
     return True
+
+def validate_message(content):
+    return len(content) < 5000
+
+def validate_topic(name):
+    return len(name) < 50

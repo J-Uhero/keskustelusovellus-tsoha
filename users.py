@@ -25,14 +25,20 @@ def logout():
 def register(name, password):
     hash_value = generate_password_hash(password)
     sql = "SELECT id FROM users WHERE name=:name;"
-    user = db.session.execute(sql, {"name":name}).fetchone()
-    if not user:
-        sql = "INSERT INTO users (name, password, admin) VALUES \
-               (:name, :password, FALSE);"
-        db.session.execute(sql, {"name":name, "password":hash_value})
-        db.session.commit()
-        return login(name, password)
-    else:
+    #user = db.session.execute(sql, {"name":name}).fetchone()
+    if validate(name, password):
+        try:
+            sql = "INSERT INTO users (name, password, admin) VALUES \
+                (:name, :password, FALSE);"
+            db.session.execute(sql, {"name":name, "password":hash_value})
+            db.session.commit()
+            return login(name, password)
+        except:
+            return False
+    return False
+
+def validate(name, password):
+    if len(name) < 1 and len(password) < 5:
         return False
 
 def count_users_messages():
