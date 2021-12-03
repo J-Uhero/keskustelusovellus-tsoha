@@ -29,7 +29,7 @@ def create_new_topic(topic, forum_id):
     return True
 
 def get_thread(topic_id):
-    sql = "SELECT u.name, m.content, m.timestamp " \
+    sql = "SELECT u.id, u.name, m.content, m.timestamp " \
           "FROM messages m, users u " \
           "WHERE m.topic_id=:topic_id AND u.id=m.user_id " \
           "ORDER BY m.timestamp;"
@@ -43,7 +43,7 @@ def create_new_message(content, topic_id):
                                  "user_id":session["user_id"],
                                  "topic_id":topic_id})
         db.session.commit()
-    except:
+    except Exception:
         return False
     return True
 

@@ -28,8 +28,8 @@ def register(name, password):
     #user = db.session.execute(sql, {"name":name}).fetchone()
     if validate(name, password):
         try:
-            sql = "INSERT INTO users (name, password, admin) VALUES \
-                (:name, :password, FALSE);"
+            sql = "INSERT INTO users (name, password, admin, timestamp, visible) VALUES \
+                (:name, :password, FALSE, NOW()), TRUE;"
             db.session.execute(sql, {"name":name, "password":hash_value})
             db.session.commit()
             return login(name, password)
@@ -38,10 +38,14 @@ def register(name, password):
     return False
 
 def validate(name, password):
-    if len(name) < 1 and len(password) < 5:
-        return False
+    return len(name) > 1 and len(password) > 4
 
 def count_users_messages():
-    sql = "SELECT count(*) FROM messages WHERE user_id=:user_id;"
+    sql = "SELECT u.timestamp as created_at, \
+                  u.admin as admin, \
+                  count(m.id) \
+           FROM users u LEFT JOIN messages m \
+           ON m.user_id=:user_id AND u.id=:user_id \
+           GROUP BY u.id;"
     count = db.session.execute(sql, {"user_id":session["user_id"]}).fetchone()
-    return int(count[0])
+    return count

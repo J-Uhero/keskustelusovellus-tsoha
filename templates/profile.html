@@ -2,6 +2,8 @@
 {% block content %}
 <p>
     Käyttäjänimi: {{session["username"]}}<br>
-    Viestejä: {{messages}} kpl
+    Luotu: {{messages.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+    Viestejä: {{messages.count}} kpl<br>
+    Admin: {{messages.admin}}
 </p>
 {% endblock %}

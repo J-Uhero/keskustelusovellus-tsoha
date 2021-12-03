@@ -91,10 +91,7 @@ def thread(id, id2):
         else:
             print("viestin lisääminen ei onnistunut")
 
-
 @app.route("/profile", methods=["GET"])
 def profile():
-    print("haetaan tietokannasta viestit")
     messages = users.count_users_messages()
-    print("viestejä:", messages)
     return render_template("profile.html", messages=messages)
