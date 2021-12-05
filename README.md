@@ -8,7 +8,7 @@
 Sovellus sisältää keskustelufoorumin, jota käyttääkseen on luotava käyttäjätunnus. Keskustelufoorumi koostuu eri aihealuein rajatuista viestiketjualueista. Käyttäjä voi luoda alueille omia keskustelulankoja, joihin voi kirjoittaa viestejä ja keskustella aihepiiriin liittyen.
 
 ### Sovelluksen tila (5.12.2021)
-Tällä hetkellä sovellukseen on luotu karkeimmat perusominaisuudet:
+Tällä hetkellä sovellukseen on luotu seuraavat ominaisuudet:
 * kirjautumis- ja rekisteröitymistoiminto, jonka alustava validointiominaisuus vaatii käyttäjänimeltä vähintään 2 ja salasanalta vähintään 5 merkkiä.
 * kirjauduttua mahdollisuus tarkastella profiilisivua, jossa näkyy käyttäjänimi, viestimäärä, liittymisaika ja admin-status
 * kirjauduttua mahdollisuus mennä keskustelualueelle, jonne voi luoda omia aihealueita ja siirtyä aihealueiden omille sivuille (samannimisiä alueita ei voi luoda)
