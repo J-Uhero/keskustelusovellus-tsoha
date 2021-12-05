@@ -7,13 +7,14 @@
 ### Yleiskuvaus
 Sovellus sisältää keskustelufoorumin, jota käyttääkseen on luotava käyttäjätunnus. Keskustelufoorumi koostuu eri aihealuein rajatuista viestiketjualueista. Käyttäjä voi luoda alueille omia keskustelulankoja, joihin voi kirjoittaa viestejä ja keskustella aihepiiriin liittyen.
 
-### Sovelluksen tila (21.11.2021)
+### Sovelluksen tila (5.12.2021)
 Tällä hetkellä sovellukseen on luotu karkeimmat perusominaisuudet:
-* kirjautumis- ja rekisteröitymistoiminto (käyttäjä- ja ylläpitäjäprofiileja ei ole vielä eriytetty)
-* kirjauduttua mahdollisuus tarkastella profiilisivua, jossa näkyy käyttäjänimi ja viestimäärä
+* kirjautumis- ja rekisteröitymistoiminto
+* kirjauduttua mahdollisuus tarkastella profiilisivua, jossa näkyy käyttäjänimi, viestimäärä, liittymisaika ja admin-status
 * kirjauduttua mahdollisuus mennä keskustelualueelle, jonne voi luoda omia aihealueita ja siirtyä aihealueiden omille sivuille (samannimisiä alueita ei voi luoda)
 * aihealueiden sivuilla mahdollisuus luoda omia keskustelulankoja
 * keskustelulankoihin on mahdollisuus kirjoittaa viestejä, joissa näkyy käyttäjänimi ja viestin kirjoitusaika (UTC 0)
+* omat viestit pystyy poistamaan
 * mahdollisuus kirjautua ulos
 
 ### Suunniteltuja ominaisuuksia
