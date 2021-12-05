@@ -74,24 +74,25 @@ def topics(id):
 def thread(id, id2):
     messages = boards.get_thread(id2)
     if request.method == "GET":
-        print("viestit",messages)
-        print("id:t", id, id2)
         return render_template("thread.html",
                                 messages=messages,
                                 forum_id=id,
                                 topic_id=id2)
     if request.method == "POST":
-        content = request.form["message"]
-        print("viesti", content)
-        tf = boards.create_new_message(content, id2)
-        print("onnistuiko viestin lisäys", tf)
-        if tf:
-            print("onnistui redirect/",id,id2)
-            return redirect(f"/forum/{id}/{id2}")
-        else:
-            print("viestin lisääminen ei onnistunut")
+        for action in request.form:
+            if action == "send":
+                content = request.form["message"]
+                if boards.create_new_message(content, id2):
+                    return redirect(f"/forum/{id}/{id2}")
 
-@app.route("/profile", methods=["GET"])
-def profile():
-    messages = users.count_users_messages()
-    return render_template("profile.html", messages=messages)
+@app.route("/forum/<int:id>/<int:id2>/<int:message_id>", methods=["POST"])
+def remove_message(id, id2, message_id):
+    print("poistetaan", message_id)
+    boards.remove_message(message_id)
+    return redirect(f"/forum/{id}/{id2}")
+
+
+@app.route("/profile/<int:id>", methods=["GET", "POST"])
+def profile(id):
+    profile = users.count_users_messages(id)
+    return render_template("profile.html", profile=profile)

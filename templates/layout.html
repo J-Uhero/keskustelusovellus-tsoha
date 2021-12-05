@@ -5,7 +5,7 @@
 {% if session.username %}
     Käyttäjä: {{session.username}}<br>
     <a href="/">Etusivu</a> | 
-    <a href="/profile">Profiili</a> | 
+    <a href="/profile/{{session.user_id}}">Profiili</a> | 
     <a href="/forum">Keskustelu</a> | 
     <a href="/logout">Kirjaudu ulos</a>
 {% else %}

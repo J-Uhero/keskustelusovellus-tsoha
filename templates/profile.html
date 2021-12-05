@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 <p>
-    Käyttäjänimi: {{session["username"]}}<br>
-    Luotu: {{messages.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
-    Viestejä: {{messages.count}} kpl<br>
-    Admin: {{messages.admin}}
+    Käyttäjänimi: {{profile.name}}<br>
+    Luotu: {{profile.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+    Viestejä: {{profile.count}} kpl<br>
+    Admin: {{profile.admin}}
 </p>
 {% endblock %}

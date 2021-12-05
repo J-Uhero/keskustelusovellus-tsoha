@@ -24,28 +24,35 @@ def logout():
 
 def register(name, password):
     hash_value = generate_password_hash(password)
-    sql = "SELECT id FROM users WHERE name=:name;"
+    #sql = "SELECT id FROM users WHERE name=:name;"
     #user = db.session.execute(sql, {"name":name}).fetchone()
     if validate(name, password):
         try:
+            print("validate")
             sql = "INSERT INTO users (name, password, admin, timestamp, visible) VALUES \
-                (:name, :password, FALSE, NOW()), TRUE;"
+                (:name, :password, FALSE, NOW(), TRUE);"
             db.session.execute(sql, {"name":name, "password":hash_value})
             db.session.commit()
             return login(name, password)
-        except:
+        except Exception:
+            print("exception")
             return False
+    print("not validate")
     return False
 
 def validate(name, password):
     return len(name) > 1 and len(password) > 4
 
-def count_users_messages():
+def count_users_messages(user_id):
     sql = "SELECT u.timestamp as created_at, \
+                  u.name as name, \
                   u.admin as admin, \
-                  count(m.id) \
+                  count(m.id) as count \
            FROM users u LEFT JOIN messages m \
            ON m.user_id=:user_id AND u.id=:user_id \
            GROUP BY u.id;"
-    count = db.session.execute(sql, {"user_id":session["user_id"]}).fetchone()
+    count = db.session.execute(sql, {"user_id":user_id}).fetchone()
+    print("count:", count)
     return count
+
+

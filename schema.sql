@@ -3,13 +3,13 @@ CREATE TABLE users (
     name TEXT UNIQUE,
     password TEXT,
     admin BOOLEAN,
-    timestamp TIMESTAMP
+    timestamp TIMESTAMP,
     visible BOOLEAN
 );
 
 CREATE TABLE forums (
     id SERIAL PRIMARY KEY,
-    topic TEXT UNIQUE
+    topic TEXT UNIQUE,
     visible BOOlEAN
 );
 
@@ -17,7 +17,7 @@ CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
     topic TEXT,
     forum_id INTEGER,
-    timestamp TIMESTAMP
+    timestamp TIMESTAMP,
     visible BOOLEAN
 );
 
@@ -26,6 +26,6 @@ CREATE TABLE messages (
     content TEXT,
     user_id INTEGER,
     topic_id INTEGER,
-    timestamp TIMESTAMP
+    timestamp TIMESTAMP,
     visible BOOLEAN
 );

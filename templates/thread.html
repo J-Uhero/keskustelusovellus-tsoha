@@ -1,16 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-<p>
     {% for m in messages%}
-    {{m.name}} {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
-    {{m.content}}<br>
+    {{m.name}}, lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
+        {% if session.user_id == m.user_id %}
+        <form action="/forum/{{topic_id}}/{{topic_id}}/{{m.message_id}}" method="POST">
+            <input action type="submit" name="m.id" value=poista>
+        </form>
+        {% endif %}
+    <p>
+    {{m.content}}
+    </p>
     <br>
     {% endfor %}
 </p>
 <p>
     <form action="/forum/{{topic_id}}/{{topic_id}}" method="POST">
-        <textarea name="message"></textarea>
-        <input type="submit" value="Lähetä">
+        <textarea name="message"></textarea><br>
+        <input type="submit" name="send" value="Lähetä">
     </form>
 </p>
 {% endblock %}
