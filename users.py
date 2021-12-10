@@ -24,8 +24,6 @@ def logout():
 
 def register(name, password):
     hash_value = generate_password_hash(password)
-    #sql = "SELECT id FROM users WHERE name=:name;"
-    #user = db.session.execute(sql, {"name":name}).fetchone()
     if validate(name, password):
         try:
             print("validate")
@@ -48,11 +46,10 @@ def count_users_messages(user_id):
                   u.name as name, \
                   u.admin as admin, \
                   count(m.id) as count \
-           FROM users u LEFT JOIN messages m \
-           ON m.user_id=:user_id AND u.id=:user_id \
+           FROM users u \
+           LEFT JOIN messages m \
+           ON m.user_id=:user_id AND m.visible=True \
+           WHERE u.id=:user_id \
            GROUP BY u.id;"
     count = db.session.execute(sql, {"user_id":user_id}).fetchone()
-    print("count:", count)
     return count
-
-

@@ -87,12 +87,12 @@ def thread(id, id2):
 
 @app.route("/forum/<int:id>/<int:id2>/<int:message_id>", methods=["POST"])
 def remove_message(id, id2, message_id):
-    print("poistetaan", message_id)
     boards.remove_message(message_id)
     return redirect(f"/forum/{id}/{id2}")
 
 
 @app.route("/profile/<int:id>", methods=["GET", "POST"])
 def profile(id):
+    print(id)
     profile = users.count_users_messages(id)
     return render_template("profile.html", profile=profile)
