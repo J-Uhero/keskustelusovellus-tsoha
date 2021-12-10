@@ -90,9 +90,22 @@ def remove_message(id, id2, message_id):
     boards.remove_message(message_id)
     return redirect(f"/forum/{id}/{id2}")
 
-
 @app.route("/profile/<int:id>", methods=["GET", "POST"])
 def profile(id):
-    print(id)
-    profile = users.count_users_messages(id)
-    return render_template("profile.html", profile=profile)
+    if request.method == "GET":
+        profile = users.count_users_messages(id)
+        #print(profile)
+        return render_template("profile.html", profile=profile)
+    if request.method == "POST":
+        if "add_contact" in request.form:
+            tf = users.create_contact(id)
+            print("created", tf)
+        if "remove_contact" in request.form:
+            tf = users.remove_contact(id)
+            print("removed", tf)
+        return redirect(f"/profile/{id}")
+
+@app.route("/contacts")
+def contacts():
+    contacts = users.get_contacts()
+    return render_template("contacts.html", contacts=contacts)

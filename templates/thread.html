@@ -5,7 +5,8 @@
         lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
         {% if session.user_id == m.user_id %}
         <form action="/forum/{{topic_id}}/{{topic_id}}/{{m.message_id}}" method="POST">
-            <input action type="submit" name="remove" value=poista>
+            <input type="submit" name="remove" value=poista>
+            <input type="hidden" name="removed_message_id" value="m.message_id">
         </form>
         {% endif %}
     <p>

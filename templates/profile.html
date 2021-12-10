@@ -1,9 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
 <p>
-    Käyttäjänimi: {{profile.name}}<br>
+    {% if profile.admin %}
+    Ylläpitäjä:
+    {% else %}
+    Käyttäjä:
+    {% endif %}
+    {{ profile.name}}<br>
     Luotu: {{profile.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
     Viestejä: {{profile.count}} kpl<br>
-    Admin: {{profile.admin}}
+</p>
+<p>
+<form action="/profile/{{profile.id}}" method="POST">
+{% if session.user_id != profile.id %}
+    {% if not profile.contact %}
+    <input type="submit" name="add_contact" value="lisää yhteystietoihin">
+    {% else %}
+    <input type="submit" name="remove_contact" value="poista yhteystiedoista">
+    {% endif %}
+{% endif %}
+</form>
 </p>
 {% endblock %}

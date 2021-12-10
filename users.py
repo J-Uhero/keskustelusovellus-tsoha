@@ -27,8 +27,8 @@ def register(name, password):
     if validate(name, password):
         try:
             print("validate")
-            sql = "INSERT INTO users (name, password, admin, timestamp, visible) VALUES \
-                (:name, :password, FALSE, NOW(), TRUE);"
+            sql = "INSERT INTO users (name, password, admin, timestamp, visible) \
+                VALUES (:name, :password, FALSE, NOW(), TRUE);"
             db.session.execute(sql, {"name":name, "password":hash_value})
             db.session.commit()
             return login(name, password)
@@ -41,15 +41,44 @@ def register(name, password):
 def validate(name, password):
     return len(name) > 1 and len(password) > 4
 
-def count_users_messages(user_id):
+def count_users_messages(id):
     sql = "SELECT u.timestamp as created_at, \
+                  u.id as id, \
                   u.name as name, \
                   u.admin as admin, \
-                  count(m.id) as count \
+                  count(m.id) as count, \
+                  :user_id IN (SELECT user_id \
+                               FROM contacts \
+                               WHERE user_id=:user_id \
+                               AND contact_id=:id) \
+                               as contact \
            FROM users u \
            LEFT JOIN messages m \
-           ON m.user_id=:user_id AND m.visible=True \
-           WHERE u.id=:user_id \
+           ON m.user_id=:id AND m.visible=True \
+           WHERE u.id=:id \
            GROUP BY u.id;"
-    count = db.session.execute(sql, {"user_id":user_id}).fetchone()
+    count = db.session.execute(sql, {"user_id":session["user_id"], "id":id}).fetchone()
     return count
+
+def get_contacts():
+    sql = "SELECT c.contact_id as contact_id, u.name as username\
+           FROM contacts c, users u \
+           WHERE c.user_id=:user_id AND u.id=c.contact_id \
+           ORDER BY username;"
+    return db.session.execute(sql, {"user_id":session["user_id"]}).fetchall()
+
+def create_contact(id):
+    try:
+        sql = "INSERT INTO contacts (user_id, contact_id, timestamp) \
+               VALUES (:user_id, :contact_id, NOW());"
+        db.session.execute(sql, {"user_id":session["user_id"], "contact_id":id})
+        db.session.commit()
+        return True
+    except Exception:
+        return False
+
+def remove_contact(id):
+    sql = "DELETE FROM contacts WHERE user_id=:user_id AND contact_id=:id;"
+    db.session.execute(sql, {"user_id":session["user_id"], "id":id})
+    db.session.commit()
+    return True

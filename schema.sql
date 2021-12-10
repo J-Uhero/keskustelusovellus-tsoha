@@ -29,3 +29,25 @@ CREATE TABLE messages (
     timestamp TIMESTAMP,
     visible BOOLEAN
 );
+
+CREATE TABLE contacts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    contact_id INTEGER,
+    timestamp TIMESTAMP
+);
+
+CREATE TABLE private_conversation (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    timestamp TIMESTAMP
+);
+
+CREATE TABLE private_messages (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    receiver_id INTEGER,
+    content TEXT,
+    timestamp TIMESTAMP,
+    visible BOOLEAN
+);

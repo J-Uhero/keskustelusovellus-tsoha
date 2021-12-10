@@ -6,11 +6,13 @@
     Käyttäjä: {{session.username}}<br>
     <a href="/">Etusivu</a> | 
     <a href="/profile/{{session.user_id}}">Profiili</a> | 
-    <a href="/forum">Keskustelu</a> | 
+    <a href="/forum">Keskustelu</a> |
+    <a href="/contacts">Yhteystiedot</a> | 
     <a href="/logout">Kirjaudu ulos</a>
 {% else %}
-    <a href="/login"> kirjaudu sisään </a> tai
-    <a href="/register"> luo tunnus </a>
+    <a href="/">Etusivu</a> | 
+    <a href="/login"> Kirjaudu sisään </a> tai
+    <a href="/register"> luo käyttäjätunnus </a>
 {% endif %}
 <hr>
 {% block content %}{% endblock %}

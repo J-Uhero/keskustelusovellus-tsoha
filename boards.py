@@ -6,9 +6,18 @@ def get_forums():
     result = db.session.execute(sql).fetchall()
     return result
 
+def get_forum(id):
+    sql = "SELECT id, topic FROM forums WHERE visible=TRUE AND id=:id;"
+    result = db.session.execute(sql, {"id":id}).fetchone()
+    print(result)
+    return result
+
 def get_topics(id):
     sql = "SELECT id, topic FROM topics WHERE forum_id=:id AND visible=TRUE;"
     return db.session.execute(sql, {"id":id}).fetchall()
+
+def get_forum_and_topic(forum_id, topic_id):
+    sql = "SELECT f.id, f.topic, t.id, t.topic FROM forums f LEFT JOIN topic t WHERE " 
 
 def create_new_forum(topic):
     sql = "INSERT INTO forums (topic, visible) VALUES (:topic, TRUE);"

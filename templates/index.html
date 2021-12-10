@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
     {{message}}
-    Tervetuloa {{session.username}}!
+    {% if session.username %}
+        Tervetuloa {{session.username}}!
+    {% else %}
+        Hei! Luo tunnus tai kirjaudu sissän käyttääksesi foorumia.
+    {% endif %}
 {% endblock %}
