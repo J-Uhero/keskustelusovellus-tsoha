@@ -37,16 +37,10 @@ CREATE TABLE contacts (
     timestamp TIMESTAMP
 );
 
-CREATE TABLE private_conversation (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER,
-    timestamp TIMESTAMP
-);
-
 CREATE TABLE private_messages (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER,
-    receiver_id INTEGER,
+    user1_id INTEGER,
+    user2_id INTEGER,
     content TEXT,
     timestamp TIMESTAMP,
     visible BOOLEAN

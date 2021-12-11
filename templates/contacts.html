@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+{% for c in contacts %}
+    <a href="/profile/{{c.contact_id}}">{{c.username}}</a><br>
+{% endfor %}
+</p>
+{% endblock %}

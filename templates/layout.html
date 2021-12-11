@@ -3,7 +3,7 @@
 <title>keskustelusovellus - {% block title %}{% endblock %}</title>
 <h1>Keskustelusovellus</h1>
 {% if session.username %}
-    Käyttäjä: {{session.username}}<br>
+    Kirjautunut: {{session.username}}<br>
     <a href="/">Etusivu</a> | 
     <a href="/profile/{{session.user_id}}">Profiili</a> | 
     <a href="/forum">Keskustelu</a> |

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for m in messages %}
+    <p>
+        <a href="/profile/{{m.id}}">{{m.name}}</a>
+        Lähetetty {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+        {{m.content}}
+    </p>
+    {% endfor %}
+
+    <form action="/conversation/{{contact_id}}" method="POST">
+        <textarea name="message"></textarea><br>
+        <input type="submit" name="send" value="Lähetä">
+    </form>
+{% endblock %}

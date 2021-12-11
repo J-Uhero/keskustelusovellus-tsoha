@@ -43,42 +43,19 @@ def validate(name, password):
 
 def count_users_messages(id):
     sql = "SELECT u.timestamp as created_at, \
-                  u.id as id, \
-                  u.name as name, \
-                  u.admin as admin, \
-                  count(m.id) as count, \
-                  :user_id IN (SELECT user_id \
-                               FROM contacts \
-                               WHERE user_id=:user_id \
-                               AND contact_id=:id) \
-                               as contact \
-           FROM users u \
-           LEFT JOIN messages m \
-           ON m.user_id=:id AND m.visible=True \
-           WHERE u.id=:id \
-           GROUP BY u.id;"
+            u.id as id, \
+            u.name as name, \
+            u.admin as admin, \
+            count(m.id) as count, \
+            :user_id IN (SELECT user_id \
+                            FROM contacts \
+                            WHERE user_id=:user_id \
+                            AND contact_id=:id) \
+                            as contact \
+            FROM users u \
+            LEFT JOIN messages m \
+            ON m.user_id=:id AND m.visible=True \
+            WHERE u.id=:id \
+            GROUP BY u.id;"
     count = db.session.execute(sql, {"user_id":session["user_id"], "id":id}).fetchone()
     return count
-
-def get_contacts():
-    sql = "SELECT c.contact_id as contact_id, u.name as username\
-           FROM contacts c, users u \
-           WHERE c.user_id=:user_id AND u.id=c.contact_id \
-           ORDER BY username;"
-    return db.session.execute(sql, {"user_id":session["user_id"]}).fetchall()
-
-def create_contact(id):
-    try:
-        sql = "INSERT INTO contacts (user_id, contact_id, timestamp) \
-               VALUES (:user_id, :contact_id, NOW());"
-        db.session.execute(sql, {"user_id":session["user_id"], "contact_id":id})
-        db.session.commit()
-        return True
-    except Exception:
-        return False
-
-def remove_contact(id):
-    sql = "DELETE FROM contacts WHERE user_id=:user_id AND contact_id=:id;"
-    db.session.execute(sql, {"user_id":session["user_id"], "id":id})
-    db.session.commit()
-    return True

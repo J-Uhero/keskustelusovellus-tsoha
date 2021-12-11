@@ -16,6 +16,9 @@
     {% if not profile.contact %}
     <input type="submit" name="add_contact" value="lisää yhteystietoihin">
     {% else %}
+    <p>
+    <a href="/conversation/{{profile.id}}">Keskustele</a><br>
+    </p>
     <input type="submit" name="remove_contact" value="poista yhteystiedoista">
     {% endif %}
 {% endif %}
