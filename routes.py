@@ -51,7 +51,8 @@ def forum():
         return render_template("forum.html", forums=forums)
     if request.method == "POST":
         main_topic = request.form["main_topic"]
-        if boards.create_new_forum(main_topic):
+        if boards.validate_topic_name:
+            boards.create_new_forum(main_topic)
             return redirect("/forum")
         else:
             message = "Aihealue ei kelvannut"
@@ -66,7 +67,8 @@ def topics(id):
         return render_template("topics.html", topics=topics, forum_id=id)
     if request.method == "POST":
         sub_topic = request.form["sub_topic"]
-        if boards.create_new_topic(sub_topic, id):
+        if boards.validate_topic_name:
+            boards.create_new_topic(sub_topic, id)
             return redirect(f"/forum/{id}")
         else:
             message = "Keskustelu ei kelvannut"
@@ -84,11 +86,11 @@ def thread(id, id2):
                                 forum_id=id,
                                 topic_id=id2)
     if request.method == "POST":
-        for action in request.form:
-            if action == "send":
-                content = request.form["message"]
-                if boards.create_new_message(content, id2):
-                    return redirect(f"/forum/{id}/{id2}")
+        if "send" in request.form:
+            content = request.form["message"]
+            boards.create_new_message(content, id2)
+            return redirect(f"/forum/{id}/{id2}")
+        #if "" == ""
 
 @app.route("/forum/<int:id>/<int:id2>/<int:message_id>", methods=["POST"])
 def remove_message(id, id2, message_id):

@@ -69,7 +69,9 @@ def remove_message(id):
     return True
 
 def validate_message(content):
-    return len(content) < 5000
+    if not len(content) < 5000:
+        return "viesti liian pitkä"
+    return None
 
-def validate_topic(name):
+def validate_topic_name(name):
     return len(name) < 50
