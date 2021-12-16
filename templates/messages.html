@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+{% for m in messages%}
+<p>
+    Viimeisin viesti: {{m.viimeisin.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+    Lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
+    Viestejä näkemättä: {{m.not_seen}}<br>
+    Viestejä yhteensä: {{m.count}}<br>
+    <a href="/conversation/{{m.contact_id}}">Keskusteluun</a><br>
+{% endfor %}
+
+{% endblock %}

@@ -8,11 +8,13 @@
     <a href="/profile/{{session.user_id}}">Profiili</a> | 
     <a href="/forum">Keskustelu</a> |
     <a href="/contacts">Yhteystiedot</a> | 
+    <a href="/messages">Viestit</a> |
+    <a href="/search">Etsi</a> | 
     <a href="/logout">Kirjaudu ulos</a>
 {% else %}
     <a href="/">Etusivu</a> | 
-    <a href="/login"> Kirjaudu sisään </a> tai
-    <a href="/register"> luo käyttäjätunnus </a>
+    <a href="/login"> Kirjaudu sisään </a> |
+    <a href="/register"> Luo käyttäjätunnus </a>
 {% endif %}
 <hr>
 {% block content %}{% endblock %}

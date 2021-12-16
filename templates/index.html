@@ -1,9 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-    {{message}}
-    {% if session.username %}
-        Tervetuloa {{session.username}}!
+    {% if session.user_id %}
+        Tervetuloa {{session.username}}!<br>
+        {% if message > 1 %}
+        Sinulla on {{message}} lukematonta
+        <a href="/messages">yksityisviestiä</a>
+        {% elif message == 1 %}
+        Sinulla on {{message}} lukematon
+        <a href="/messages">yksityisviesti</a>
+        {% endif %}
     {% else %}
-        Hei! Luo tunnus tai kirjaudu sissän käyttääksesi foorumia.
+        Hei! Luo tunnus tai kirjaudu sisään käyttääksesi foorumia.
     {% endif %}
 {% endblock %}

@@ -7,7 +7,10 @@ import users
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    message = None
+    if session.get("user_id") is not None:
+        message = conversation_repository.count_all_seen_messages()
+    return render_template("index.html", message=message)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -113,17 +116,25 @@ def contacts():
 def conversation(id):
     if request.method == "GET":
         messages = conversation_repository.get_conversation(id)
-        print("messages", messages)
+        conversation_repository.update_messages_as_seen(id)
         return render_template("conversation.html",
                                messages=messages,
                                contact_id=id)
     if request.method == "POST":
-        print("post", id)
         message = request.form["message"]
-        print("message", message)
         conversation_repository.add_private_message(id, message)
         return redirect(f"/conversation/{id}")
 
-@app.route("/messages")
+@app.route("/messages", methods=["GET"])
 def messages():
-    pass
+    messages = conversation_repository.get_private_messages_info()
+    print("viestit", messages)
+    return render_template("messages.html", messages=messages)
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if request.method == "GET":
+        return render_template("search.html")
+    if request.method == "POST":
+        print("post")
+        return redirect("/search")

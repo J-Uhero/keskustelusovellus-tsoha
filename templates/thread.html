@@ -3,7 +3,7 @@
     {% for m in messages%}
     <a href="/profile/{{m.user_id}}">{{m.name}}</a>
         lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
-        {% if session.user_id == m.user_id %}
+        {% if session.user_id == m.user_id or session.admin %}
         <form action="/forum/{{topic_id}}/{{topic_id}}/{{m.message_id}}" method="POST">
             <input type="submit" name="remove" value=poista>
             <input type="hidden" name="removed_message_id" value="m.message_id">

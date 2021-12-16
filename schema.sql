@@ -43,5 +43,6 @@ CREATE TABLE private_messages (
     user2_id INTEGER,
     content TEXT,
     timestamp TIMESTAMP,
-    visible BOOLEAN
+    visible BOOLEAN,
+    seen BOOLEAN
 );
