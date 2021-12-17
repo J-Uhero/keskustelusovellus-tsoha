@@ -130,13 +130,15 @@ def conversation(id):
 @app.route("/messages", methods=["GET"])
 def messages():
     messages = conversation_repository.get_private_messages_info()
-    print("viestit", messages)
     return render_template("messages.html", messages=messages)
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search", methods=["GET"])
 def search():
-    if request.method == "GET":
-        return render_template("search.html")
-    if request.method == "POST":
-        print("post")
-        return redirect("/search")
+    query = request.args.get("query")
+    search_type = request.args.get("type")
+    results = None
+    searched = False
+    if search_type == "username":
+        results = users.search_user_by_name("%"+query+"%")
+        searched = True
+    return render_template("search.html", results=results, searched=searched)

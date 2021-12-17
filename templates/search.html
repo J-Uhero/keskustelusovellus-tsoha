@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+Etsi 
+<form action="/search" method="GET">
+<input type=radio name="type" value="username" checked> käyttäjänimeä 
+<input type=radio name="type" value="forum_content"> keskustelusisältöä <br>
+<p>
+<input type="text" name="query"> 
+<input type="submit" value="hae"> <br>
+</form>
+</p>
+
+{% if results %}
+    Osumat:
+    <p>
+        <ul>
+        {% for r in results %}
+            <li><a href="/profile/{{r.id}}">{{r.name}}</a><br>
+        {% endfor %}
+        </ul>
+{% elif searched %}
+        <p>Ei osumia
+{% endif %}
+
+{% endblock %}

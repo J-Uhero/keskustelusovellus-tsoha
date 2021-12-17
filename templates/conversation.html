@@ -4,8 +4,8 @@
     <p>
         <a href="/profile/{{m.id}}">{{m.name}}</a>
         Lähetetty {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+        <p>
         {{m.content}}
-    </p>
     {% endfor %}
 
     <form action="/conversation/{{contact_id}}" method="POST">

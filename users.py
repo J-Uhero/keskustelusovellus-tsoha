@@ -33,9 +33,7 @@ def register(name, password):
             db.session.commit()
             return login(name, password)
         except Exception:
-            print("exception")
             return False
-    print("not validate")
     return False
 
 def validate(name, password):
@@ -59,3 +57,7 @@ def count_users_messages(id):
             GROUP BY u.id;"
     count = db.session.execute(sql, {"user_id":session["user_id"], "id":id}).fetchone()
     return count
+
+def search_user_by_name(name):
+    sql = "SELECT id, name FROM users WHERE name LIKE :name;"
+    return db.session.execute(sql, {"name":name}).fetchall()

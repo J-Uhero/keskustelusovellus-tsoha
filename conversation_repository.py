@@ -27,18 +27,6 @@ def update_messages_as_seen(sender_id):
 
 
 def get_private_messages_info():
-    sql2 = """SELECT p.user1_id as contact_id, u.name, p.content, p.timestamp, 
-            (SELECT COUNT(*) FROM private_messages p2
-            WHERE p2.user2_id=:user_id AND p2.user1_id=p.user1_id AND visible=True) as count
-            FROM private_messages p LEFT JOIN users u ON p.user1_id=u.id
-            WHERE p.user2_id=:user_id AND p.visible=TRUE 
-            ORDER BY p.timestamp"""
-
-    sql = "SELECT p.user1_id as contact_id, u.name, p.content, p.timestamp" \
-            "FROM private_messages p, users u " \
-            "WHERE p.user2_id=:user_id AND p.user1_id=u.id " \
-            "ORDER BY p.timestamp DESC LIMIT 1;"
-
     sql3 = """SELECT p.user1_id as contact_id, MAX(p.timestamp) as viimeisin, COUNT(*) as count,
         (SELECT u.name FROM users u WHERE p.user1_id=u.id) as name,
         (SELECT COUNT(*) FROM private_messages p2
