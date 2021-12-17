@@ -22,6 +22,9 @@
     <input type="submit" name="remove_contact" value="poista yhteystiedoista">
     {% endif %}
 {% endif %}
+{% if session.admin and session.user_id != profile.id%}
+    <input type="submit" name="remove_user" value="poista käyttäjäprofiili">
+{% endif %}
 </form>
 </p>
 {% endblock %}

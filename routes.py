@@ -9,7 +9,7 @@ import users
 def index():
     message = None
     if session.get("user_id") is not None:
-        message = conversation_repository.count_all_seen_messages()
+        message = conversation_repository.count_all_not_seen_messages()
     return render_template("index.html", message=message)
 
 @app.route("/login", methods=["POST", "GET"])
@@ -101,7 +101,7 @@ def remove_message(id, id2, message_id):
 def profile(id):
     if request.method == "GET":
         profile = users.count_users_messages(id)
-        return render_template("profile.html", profile=profile, )
+        return render_template("profile.html", profile=profile)
     if request.method == "POST":
         if "add_contact" in request.form:
             contact_repository.create_contact(id)
@@ -135,10 +135,27 @@ def messages():
 @app.route("/search", methods=["GET"])
 def search():
     query = request.args.get("query")
-    search_type = request.args.get("type")
     results = None
     searched = False
-    if search_type == "username":
-        results = users.search_user_by_name("%"+query+"%")
+    found = False
+    search_type = {  
+        "username": False,
+        "forum_message": False,
+        "private_message": False,    
+    }
+    if query is not None:
         searched = True
-    return render_template("search.html", results=results, searched=searched)
+        search_type["query"] = True
+        search_type[request.args.get("type")] = True
+        if search_type["username"]:
+            results = users.search_user_by_name("%"+query+"%")
+        if search_type["forum_message"]:
+            results = boards.search_messages_from_forums("%"+query+"%")
+        if len(results) > 0:
+            found = True
+    return render_template("search.html",
+                           results=results,
+                           search_type=search_type,
+                           searched=searched,
+                           found=found)
+

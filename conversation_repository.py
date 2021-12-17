@@ -25,20 +25,19 @@ def update_messages_as_seen(sender_id):
     except:
         return False
 
-
 def get_private_messages_info():
-    sql3 = """SELECT p.user1_id as contact_id, MAX(p.timestamp) as viimeisin, COUNT(*) as count,
-        (SELECT u.name FROM users u WHERE p.user1_id=u.id) as name,
-        (SELECT COUNT(*) FROM private_messages p2
-            WHERE p2.user1_id=p.user1_id AND p2.user2_id=:user_id AND p2.seen=False) as not_seen
-        FROM private_messages p 
-        WHERE p.user2_id=:user_id AND p.visible=True
-        GROUP BY p.user1_id 
-        ORDER BY viimeisin DESC;"""
+    sql3 = "SELECT p.user1_id as contact_id, MAX(p.timestamp) as viimeisin, COUNT(*) as count, \
+        (SELECT u.name FROM users u WHERE p.user1_id=u.id) as name, \
+        (SELECT COUNT(*) FROM private_messages p2 \
+            WHERE p2.user1_id=p.user1_id AND p2.user2_id=:user_id AND p2.seen=False) as not_seen \
+        FROM private_messages p \
+        WHERE p.user2_id=:user_id AND p.visible=True \
+        GROUP BY p.user1_id \
+        ORDER BY viimeisin DESC;"
 
     return db.session.execute(sql3, {"user_id":session["user_id"]}).fetchall()
 
-def count_all_seen_messages():
+def count_all_not_seen_messages():
     sql = "SELECT COUNT(*) FROM private_messages \
         WHERE user2_id=:user_id AND seen=False AND visible=True;"
     return db.session.execute(sql, {"user_id":session["user_id"]}).fetchone()[0]

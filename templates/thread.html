@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
     {% for m in messages%}
+    <div class=message_info></dic>
+    <p>
     <a href="/profile/{{m.user_id}}">{{m.name}}</a>
         lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
         {% if session.user_id == m.user_id or session.admin %}
@@ -9,12 +11,12 @@
             <input type="hidden" name="removed_message_id" value="m.message_id">
         </form>
         {% endif %}
-    <p>
-    {{m.content}}
     </p>
-    <br>
-    {% endfor %}
-</p>
+    <div class=message>
+    {{m.content}}
+    </div>
+</div>
+    {% endfor %} 
 <p>
     <form action="/forum/{{topic_id}}/{{topic_id}}" method="POST">
         <textarea name="message"></textarea><br>

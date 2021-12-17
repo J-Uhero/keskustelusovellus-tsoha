@@ -3,24 +3,38 @@
 
 Etsi 
 <form action="/search" method="GET">
-<input type=radio name="type" value="username" checked> käyttäjänimeä 
-<input type=radio name="type" value="forum_content"> keskustelusisältöä <br>
+<input type=radio name="type" value="forum_message" checked> keskustelusisältöä 
+<input type=radio name="type" value="username"> käyttäjänimeä<br>
 <p>
 <input type="text" name="query"> 
 <input type="submit" value="hae"> <br>
 </form>
 </p>
 
-{% if results %}
-    Osumat:
+{% if search_type["username"] and found %}
+    osumat:
     <p>
         <ul>
         {% for r in results %}
             <li><a href="/profile/{{r.id}}">{{r.name}}</a><br>
         {% endfor %}
         </ul>
-{% elif searched %}
-        <p>Ei osumia
+{% elif search_type["forum_message"] and found %}
+    osumat:
+    <p>
+        <ul>
+        {% for r in results %}
+            <li>
+                foorumi: <a href="/forum/{{r.forum_id}}">{{r.forum}}</a> 
+                keskustelu: <a href="/profile/{{r.forum_id}}/{{r.topic_id}}">{{r.topic}}</a><br>
+                käyttäjä: <a href="/profile/{{r.user_id}}">{{r.username}}</a> 
+                aika: {{r.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+                <p>{{r.content}}
+            </li>
+        {% endfor %}
+        </ul>
+{% elif searched and not found %}
+        <p>ei osumia
 {% endif %}
 
 {% endblock %}

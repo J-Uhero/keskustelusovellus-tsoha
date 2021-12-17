@@ -69,9 +69,19 @@ def remove_message(id):
     return True
 
 def validate_message(content):
-    if not len(content) < 5000:
-        return "viesti liian pitkä"
-    return None
+    return len(content) < 5000
 
 def validate_topic_name(name):
     return len(name) < 50
+
+def search_messages_from_forums(entry):
+    sql = "SELECT m.id as message_id, m.content as content, m.user_id as user_id, "\
+          "u.name as username, t.id as topic_id, t.topic as topic, f.id as forum_id, " \
+          "f.topic as forum, m.timestamp as timestamp " \
+          "FROM messages m " \
+          "LEFT JOIN users u ON u.id=m.user_id " \
+          "LEFT JOIN topics t ON t.id=m.topic_id AND t.visible=True " \
+          "LEFT JOIN forums f ON f.id=t.forum_id AND f.visible=True " \
+          "WHERE m.content LIKE :entry AND m.visible=True " \
+          "ORDER BY timestamp DESC;"
+    return db.session.execute(sql, {"entry":entry}).fetchall()

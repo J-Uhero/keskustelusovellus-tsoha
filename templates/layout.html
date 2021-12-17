@@ -1,22 +1,37 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="/static/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <body>
-<title>keskustelusovellus - {% block title %}{% endblock %}</title>
-<h1>Keskustelusovellus</h1>
-{% if session.username %}
-    Kirjautunut: {{session.username}}<br>
-    <a href="/">Etusivu</a> | 
-    <a href="/profile/{{session.user_id}}">Profiili</a> | 
-    <a href="/forum">Keskustelu</a> |
-    <a href="/contacts">Yhteystiedot</a> | 
-    <a href="/messages">Viestit</a> |
-    <a href="/search">Etsi</a> | 
-    <a href="/logout">Kirjaudu ulos</a>
-{% else %}
-    <a href="/">Etusivu</a> | 
-    <a href="/login"> Kirjaudu sisään </a> |
-    <a href="/register"> Luo käyttäjätunnus </a>
-{% endif %}
-<hr>
-{% block content %}{% endblock %}
-<hr>
+    <title>keskustelusovellus - {% block title %}{% endblock %}</title>
+
+    <div class=header>
+        <h1>Keskustelusovellus</h1>
+    </div>
+    <div class=logged>
+        <h3>Kirjautunut: {{session.username}}</h2>
+    </div>
+    <nav>
+        <ul>
+            {% if session.username %}
+            <li><a href="/">Etusivu</a></li>
+            <li><a href="/profile/{{session.user_id}}">Profiili</a></li>
+            <li><a href="/forum">Keskustelu</a></li>
+            <li><a href="/contacts">Yhteystiedot</a></li> 
+            <li><a href="/messages">Viestit</a></li>
+            <li><a href="/search">Etsi</a></li>
+            <li><a href="/logout">Kirjaudu ulos</a></li>
+            {% else %}
+            <li><a href="/">Etusivu</a></li>
+            <li><a href="/login"> Kirjaudu sisään </a></li>
+            <li><a href="/register"> Luo käyttäjätunnus </a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+    <hr>
+    <div class=logged>
+        Kirjautunut: {{session.username}}
+    </div>
 </body>

@@ -1,0 +1,41 @@
+body {
+    background: rgb(231, 188, 188);
+    margin: 2em 10%;
+    max-width: 45em;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+nav li {
+    display: inline-block;
+    padding: 0 .5em;
+}
+
+.header {
+    background: rgb(238, 136, 120);
+    font-weight: bold;
+    padding: 1em 1em;
+    font-size: 1em;
+    border-radius: .5em;
+}
+
+.logged {
+    background: rgb(238, 161, 174);
+    padding: 1em 1em;
+    font-size: 1em;
+    border-radius: .5em;
+}
+
+.message_info {
+    background: rgb(238, 161, 174);
+    padding: 1em 1em;
+    font-size: 1em;
+    border-radius: .5em;
+}
+
+.message {
+    background: rgb(230, 184, 192);
+    padding: 1em 1em;
+    font-size: 1em;
+    border-radius: .5em;
+}
+
