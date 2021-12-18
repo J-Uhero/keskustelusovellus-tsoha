@@ -63,9 +63,11 @@ def forum():
 @app.route("/forum/<int:id>", methods=["GET", "POST"])
 def topics(id):
     topics = boards.get_topics(id)
-    print(topics)
+    info = boards.get_forum_info(id)
     if request.method == "GET":
-        return render_template("topics.html", topics=topics, forum_id=id)
+        return render_template("topics.html",
+                               topics=topics,
+                               info=info)
     if request.method == "POST":
         if "add" in request.form:
             sub_topic = request.form["sub_topic"]
@@ -88,8 +90,10 @@ def thread(id, id2):
         if "send" in request.form:
             content = request.form["message"]
             boards.create_new_message(content, id2)
-            return redirect(f"/forum/{id}/{id2}")
-        #if "" == ""
+        if "remove" in request.form:
+            choice_id = request.form["remove_id"]
+            boards.remove_message(choice_id)
+        return redirect(f"/forum/{id}/{id2}")
 
 @app.route("/forum/<int:id>/<int:id2>/<int:message_id>", methods=["POST"])
 def remove_message(id, id2, message_id):
@@ -106,6 +110,10 @@ def profile(id):
             contact_repository.create_contact(id)
         if "remove_contact" in request.form:
             contact_repository.remove_contact(id)
+        if "remove_user" in request.form and session["admin"]:
+            users.freeze_user(id)
+        if "restore_user" in request.form and session["admin"]:
+            users.activate_user(id)
         return redirect(f"/profile/{id}")
 
 @app.route("/contacts")

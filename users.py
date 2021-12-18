@@ -40,7 +40,7 @@ def validate(name, password):
     return len(name) > 1 and len(password) > 4
 
 def count_users_messages(id):
-    sql = "SELECT u.timestamp as created_at, u.id as id, " \
+    sql = "SELECT u.timestamp as created_at, u.id as id, u.visible as active, " \
         "u.name as name, u.admin as admin, count(m.id) as count," \
         ":user_id IN (SELECT user_id FROM contacts " \
         "WHERE user_id=:user_id AND contact_id=:id) as contact "\
@@ -48,7 +48,7 @@ def count_users_messages(id):
         "LEFT JOIN messages m " \
         "ON m.user_id=:id AND m.visible=True " \
         "WHERE u.id=:id " \
-        "GROUP BY u.id;""
+        "GROUP BY u.id;"
     count = db.session.execute(sql, {"user_id":session["user_id"], "id":id}).fetchone()
     return count
 
@@ -57,4 +57,15 @@ def search_user_by_name(name):
     return db.session.execute(sql, {"name":name}).fetchall()
 
 def freeze_user(id):
+    sql = "UPDATE users SET visible=False WHERE id=:id;"
+    db.session.execute(sql, {"id":id})
+    db.session.commit()
 
+def activate_user(id):
+    sql = "UPDATE users SET visible=True WHERE id=:id;"
+    db.session.execute(sql, {"id":id})
+    db.session.commit()
+
+def check_if_user_is_freezed(id):
+    sql = "SELECT visible FROM users WHERE id=:id;"
+    return db.session.execute(sql, {"id":id}).fetchone()[0]

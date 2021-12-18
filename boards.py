@@ -24,9 +24,12 @@ def get_topics(id):
     return db.session.execute(sql, {"id":id}).fetchall()
 
 def get_forum_and_topic_info(topic_id):
-    sql = "SELECT f.id as forum_id, f.topic as forum, t.id as topic_id, t.topic as topic " \
-        "FROM forums f, topics t WHERE f.id=t.forum_id AND t.id=:topic_id;"
-    return db.session.execute(sql, {"topic_id":topic_id}).fetchone()
+    sql = "SELECT f.id as forum_id, f.topic as forum, t.id as topic_id, " \
+        "t.topic as topic, u.visible as active " \
+        "FROM forums f, topics t, users u " \
+        "WHERE f.id=t.forum_id AND t.id=:topic_id AND u.id=:user_id;"
+    return db.session.execute(sql, {"topic_id":topic_id,
+                                    "user_id":session["user_id"]}).fetchone()
 
 def create_new_forum(topic):
     try:

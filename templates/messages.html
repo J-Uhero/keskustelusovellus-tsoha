@@ -3,13 +3,20 @@
     viestit
 {% endblock %}
 {% block content %}
-{% for m in messages%}
+{% if messages|length > 0 %}
+{% for m in messages %}
 <p>
     Viimeisin viesti: {{m.viimeisin.strftime("%Y-%m-%d %H:%M:%S")}}<br>
     Lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
     Viestejä näkemättä: {{m.not_seen}}<br>
     Viestejä yhteensä: {{m.count}}<br>
     <a href="/conversation/{{m.contact_id}}">Keskusteluun</a><br>
+</p>
 {% endfor %}
+{% else %}
+<p>
+    sinulla ei ole viestejä
+</p>
+{% endif %}
 
 {% endblock %}
