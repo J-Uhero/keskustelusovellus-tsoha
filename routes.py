@@ -47,44 +47,43 @@ def logout():
 @app.route("/forum", methods=["GET", "POST"])
 def forum():
     forums = boards.get_forums()
+    #print(forums)
     if request.method == "GET":
         return render_template("forum.html", forums=forums)
     if request.method == "POST":
-        main_topic = request.form["main_topic"]
-        if boards.validate_topic_name:
-            boards.create_new_forum(main_topic)
-            return redirect("/forum")
-        else:
-            message = "Aihealue ei kelvannut"
-            return render_template("forum.html",
-                                    forums=forums,
-                                    message=message)
+        if "new" in request.form:
+            main_topic = request.form["main_topic"]
+            if boards.validate_topic_name(main_topic):
+                boards.create_new_forum(main_topic)
+        if "remove" in request.form:
+            choice_id = request.form["remove_id"]
+            boards.remove_forum(choice_id)
+        return redirect("/forum")
 
 @app.route("/forum/<int:id>", methods=["GET", "POST"])
 def topics(id):
     topics = boards.get_topics(id)
+    print(topics)
     if request.method == "GET":
         return render_template("topics.html", topics=topics, forum_id=id)
     if request.method == "POST":
-        sub_topic = request.form["sub_topic"]
-        if boards.validate_topic_name:
-            boards.create_new_topic(sub_topic, id)
-            return redirect(f"/forum/{id}")
-        else:
-            message = "Keskustelu ei kelvannut"
-            return render_template("topic.html",
-                                    topics=topics,
-                                    forum_id=id,
-                                    message=message)
+        if "add" in request.form:
+            sub_topic = request.form["sub_topic"]
+            if boards.validate_topic_name:
+                boards.create_new_topic(sub_topic, id)
+        if "remove" in request.form:
+            choice_id = request.form["remove_id"]
+            boards.remove_topic(choice_id)
+        return redirect(f"/forum/{id}")
 
 @app.route("/forum/<int:id>/<int:id2>", methods=["GET", "POST"])
 def thread(id, id2):
     messages = boards.get_thread(id2)
+    info = boards.get_forum_and_topic_info(id2)
     if request.method == "GET":
         return render_template("thread.html",
                                 messages=messages,
-                                forum_id=id,
-                                topic_id=id2)
+                                info=info)
     if request.method == "POST":
         if "send" in request.form:
             content = request.form["message"]
@@ -141,17 +140,19 @@ def search():
     search_type = {  
         "username": False,
         "forum_message": False,
-        "private_message": False,    
+        "private_message": False,  
     }
-    if query is not None:
+    if query is not None and len(query) > 0:
+        query = "%" + query + "%"
         searched = True
-        search_type["query"] = True
         search_type[request.args.get("type")] = True
         if search_type["username"]:
-            results = users.search_user_by_name("%"+query+"%")
+            results = users.search_user_by_name(query)
         if search_type["forum_message"]:
-            results = boards.search_messages_from_forums("%"+query+"%")
-        if len(results) > 0:
+            results = boards.search_messages_from_forums(query)
+        if search_type["private_message"]:
+            results = conversation_repository.search_private_messages(query)
+        if results is not None and len(results) > 0:
             found = True
     return render_template("search.html",
                            results=results,

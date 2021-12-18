@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block title %}
+    etusivu
+{% endblock %}
 {% block content %}
     {% if session.user_id %}
         Tervetuloa {{session.username}}!<br>

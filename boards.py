@@ -2,35 +2,55 @@ from db import db
 from flask import session
 
 def get_forums():
-    sql = "SELECT id, topic FROM forums WHERE visible=TRUE ORDER BY topic;"
-    result = db.session.execute(sql).fetchall()
-    return result
+    sql = "SELECT f.id, f.topic, COUNT(t.id) as count " \
+        "FROM forums f " \
+        "LEFT JOIN topics t ON f.id=t.forum_id AND t.visible=True " \
+        "WHERE f.visible=TRUE " \
+        "GROUP BY f.id " \
+        "ORDER BY f.topic;"
 
-def get_forum(id):
+    return db.session.execute(sql).fetchall()
+
+def get_forum_info(id):
     sql = "SELECT id, topic FROM forums WHERE visible=TRUE AND id=:id;"
-    result = db.session.execute(sql, {"id":id}).fetchone()
-    print(result)
-    return result
+    return db.session.execute(sql, {"id":id}).fetchone()
 
 def get_topics(id):
-    sql = "SELECT id, topic FROM topics WHERE forum_id=:id AND visible=TRUE;"
+    sql = "SELECT t.id as id , t.topic as topic, COUNT(m.id) as count " \
+        "FROM topics t " \
+        "LEFT JOIN messages m ON m.topic_id=t.id AND m.visible=True " \
+        "WHERE t.forum_id=:id AND t.visible=True " \
+        "GROUP BY t.id ORDER BY topic;"
     return db.session.execute(sql, {"id":id}).fetchall()
 
-def get_forum_and_topic(forum_id, topic_id):
-    sql = "SELECT f.id, f.topic, t.id, t.topic FROM forums f LEFT JOIN topic t WHERE " 
+def get_forum_and_topic_info(topic_id):
+    sql = "SELECT f.id as forum_id, f.topic as forum, t.id as topic_id, t.topic as topic " \
+        "FROM forums f, topics t WHERE f.id=t.forum_id AND t.id=:topic_id;"
+    return db.session.execute(sql, {"topic_id":topic_id}).fetchone()
 
 def create_new_forum(topic):
-    sql = "INSERT INTO forums (topic, visible) VALUES (:topic, TRUE);"
     try:
+        sql = "INSERT INTO forums (topic, visible) VALUES (:topic, TRUE);"
         db.session.execute(sql, {"topic":topic})
         db.session.commit()
-    except:
+    except Exception:  
+        db.session.execute("ROLLBACK")
+        update_forum_to_visible(topic)
+    
+def update_forum_to_visible(topic):
+    sql = "SELECT id FROM forums WHERE topic=:topic;"
+    result = db.session.execute(sql, {"topic":topic}).fetchone()
+    try:
+        sql = "UPDATE forums SET visible=True WHERE topic=:topic;"
+        db.session.execute(sql, {"topic":topic})
+        db.session.commit()
+        return True
+    except Exception:
         return False
-    return True
 
 def create_new_topic(topic, forum_id):
-    sql = "INSERT INTO topics (topic, forum_id, timestamp, visible) \
-           VALUES (:topic, :forum_id, NOW(), TRUE);"
+    sql = "INSERT INTO topics (topic, forum_id, timestamp, visible) " \
+        "VALUES (:topic, :forum_id, NOW(), TRUE);"
     try:
         db.session.execute(sql, {"topic":topic, "forum_id":forum_id})
         db.session.commit()
@@ -45,6 +65,26 @@ def get_thread(topic_id):
           "ORDER BY m.timestamp;"
     return db.session.execute(sql, {"topic_id":topic_id}).fetchall()
 
+def remove_forum(forum_id):
+    sql = "UPDATE forums SET visible=False WHERE id=:forum_id;"
+    db.session.execute(sql, {"forum_id":forum_id})
+    db.session.commit()
+
+    sql = "SELECT id FROM topics WHERE forum_id=:forum_id;"
+    results = db.session.execute(sql, {"forum_id":forum_id}).fetchall()
+    for result in results:
+        remove_topic(result[0])
+
+def remove_topic(topic_id):
+    sql = "UPDATE topics SET visible=False WHERE id=:topic_id;"
+    db.session.execute(sql, {"topic_id":topic_id})
+    db.session.commit()
+
+    sql = "SELECT id FROM messages WHERE topic_id=:topic_id;"
+    results = db.session.execute(sql, {"topic_id":topic_id}).fetchall()
+    for result in results:
+        remove_message(result[0])
+
 def create_new_message(content, topic_id):
     sql = "INSERT INTO messages (content, user_id, topic_id, timestamp, visible) " \
           "VALUES (:content, :user_id, :topic_id, NOW(), TRUE);"
@@ -58,30 +98,29 @@ def create_new_message(content, topic_id):
     return True
 
 def remove_message(id):
-    print(id)
-    sql = "UPDATE messages SET visible=FALSE WHERE id=:id;"
+    sql = "UPDATE messages SET visible=False WHERE id=:id;"
     try:
         db.session.execute(sql, {"id":id})
         db.session.commit()
     except Exception:
-        print("viestin poisto ei onnistunut")
+        db.session.execute("ROLLBACK")
         return False
     return True
 
 def validate_message(content):
-    return len(content) < 5000
+    return 0 < len(content) < 5000
 
 def validate_topic_name(name):
-    return len(name) < 50
+    return 0 < len(name) < 50
 
 def search_messages_from_forums(entry):
     sql = "SELECT m.id as message_id, m.content as content, m.user_id as user_id, "\
-          "u.name as username, t.id as topic_id, t.topic as topic, f.id as forum_id, " \
-          "f.topic as forum, m.timestamp as timestamp " \
-          "FROM messages m " \
-          "LEFT JOIN users u ON u.id=m.user_id " \
-          "LEFT JOIN topics t ON t.id=m.topic_id AND t.visible=True " \
-          "LEFT JOIN forums f ON f.id=t.forum_id AND f.visible=True " \
-          "WHERE m.content LIKE :entry AND m.visible=True " \
-          "ORDER BY timestamp DESC;"
+        "u.name as username, t.id as topic_id, t.topic as topic, f.id as forum_id, " \
+        "f.topic as forum, m.timestamp as timestamp " \
+        "FROM messages m " \
+        "LEFT JOIN users u ON u.id=m.user_id " \
+        "LEFT JOIN topics t ON t.id=m.topic_id AND t.visible=True " \
+        "LEFT JOIN forums f ON f.id=t.forum_id AND f.visible=True " \
+        "WHERE m.content LIKE :entry AND m.visible=True " \
+        "ORDER BY timestamp DESC;"
     return db.session.execute(sql, {"entry":entry}).fetchall()

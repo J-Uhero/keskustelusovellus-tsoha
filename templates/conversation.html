@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block title %}
+    keskustelu
+{% endblock %}
 {% block content %}
     {% for m in messages %}
     <p>
@@ -13,9 +16,10 @@
         </div>
 
     {% endfor %}
-
-    <form action="/conversation/{{contact_id}}" method="POST">
-        <textarea name="message"></textarea><br>
-        <input type="submit" name="send" value="Lähetä">
-    </form>
+    <p>
+        <form action="/conversation/{{contact_id}}" method="POST">
+            <textarea name="message"></textarea><br>
+            <input type="submit" name="send" value="Lähetä">
+        </form>
+    </p>
 {% endblock %}

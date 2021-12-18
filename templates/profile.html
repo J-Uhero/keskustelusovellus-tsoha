@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block title %}
+    profiili
+{% endblock %}
 {% block content %}
 <p>
     {% if profile.admin %}
@@ -6,7 +9,7 @@
     {% else %}
     Käyttäjä:
     {% endif %}
-    {{ profile.name}}<br>
+    {{ profile.name}} <br>
     Luotu: {{profile.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
     Viestejä: {{profile.count}} kpl<br>
 </p>

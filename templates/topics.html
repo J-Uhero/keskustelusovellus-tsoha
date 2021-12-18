@@ -1,22 +1,45 @@
 {% extends "layout.html" %}
+{% block title %}
+    aiheet
+{% endblock %}
 {% block content %}
 <p>
     {{name}}
 </p>
 <p>
-    Keskustelut:
+    <table>
+        <threat>
+            <th>keskustelu</th>
+            <th>viestejä</th>
+            {% if session.admin %}
+            <th>näkyvyys</th>
+            {% endif %}
+        </threat>
+        <tbody>
+            {% for topic in topics %}
+            <tr>
+                <td><a href="/forum/{{forum_id}}/{{topic.id}}"> {{topic.topic}}</a></td>
+                <td>{{topic.count}}</td>
+                {% if session.admin %}
+                <td>
+                    <form action="/forum/{{forum_id}}" method="POST">
+                    <input type="hidden" name="remove_id" value={{topic.id}}>
+                    <input type="submit" name="remove" value="poista">
+                    <input type="hidden" name="id" value={{ id }}>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </p>
-<ul>
-{% for topic in topics %}
-<li>    <a href="/forum/{{forum_id}}/{{topic.id}}"> {{topic.topic}} </a> <br>
-{% endfor %}
-</ul>
 <p>
-    {% if session.username %}<br>
+    {% if session.username %}
     Luo uusi keskustelu<br>
     <form action="/forum/{{forum_id}}" method="POST">
         <input type="text" name="sub_topic" size="20"><br>
-        <input type="submit" name="send" value="luo">
+        <input type="submit" name="add" value="luo">
     </form>
     {{message}}
     {% endif %}

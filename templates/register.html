@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block title %}
+    rekisteröidy
+{% endblock %}
 {% block content %}
 <form action="/register" method="POST">
 <p>
@@ -12,6 +15,6 @@
     salasana:<br>
     <input type="password" name="password" size="20"><br>
 <p>
-    <input type="submit" name="vahvista" size="20"><br>
+    <input type="submit" name="rekisteröidy" size="20"><br>
 </form>
 {% endblock %}

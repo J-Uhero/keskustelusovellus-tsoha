@@ -26,16 +26,16 @@ def update_messages_as_seen(sender_id):
         return False
 
 def get_private_messages_info():
-    sql3 = "SELECT p.user1_id as contact_id, MAX(p.timestamp) as viimeisin, COUNT(*) as count, \
-        (SELECT u.name FROM users u WHERE p.user1_id=u.id) as name, \
-        (SELECT COUNT(*) FROM private_messages p2 \
-            WHERE p2.user1_id=p.user1_id AND p2.user2_id=:user_id AND p2.seen=False) as not_seen \
-        FROM private_messages p \
-        WHERE p.user2_id=:user_id AND p.visible=True \
-        GROUP BY p.user1_id \
-        ORDER BY viimeisin DESC;"
+    sql = "SELECT p.user1_id as contact_id, MAX(p.timestamp) as viimeisin, COUNT(*) as count, " \
+        "(SELECT u.name FROM users u WHERE p.user1_id=u.id) as name, " \
+        "(SELECT COUNT(*) FROM private_messages p2 " \
+        "WHERE p2.user1_id=p.user1_id AND p2.user2_id=:user_id AND p2.seen=False) as not_seen " \
+        "FROM private_messages p " \
+        "WHERE p.user2_id=:user_id AND p.visible=True " \
+        "GROUP BY p.user1_id " \
+        "ORDER BY viimeisin DESC;"
 
-    return db.session.execute(sql3, {"user_id":session["user_id"]}).fetchall()
+    return db.session.execute(sql, {"user_id":session["user_id"]}).fetchall()
 
 def count_all_not_seen_messages():
     sql = "SELECT COUNT(*) FROM private_messages \
@@ -43,6 +43,15 @@ def count_all_not_seen_messages():
     return db.session.execute(sql, {"user_id":session["user_id"]}).fetchone()[0]
 
 def count_messages(id):
-    sql3 = """SELECT p.user1_id as contact_id, COUNT(p.user1_id), MAX(p.timestamp) as count 
-        FROM private_messages p
-        WHERE p.user2_id=:user_id AND visible=True GROUP BY p.user1_id"""
+    sql3 = "SELECT p.user1_id as contact_id, COUNT(p.user1_id), MAX(p.timestamp) as count " \
+        "FROM private_messages p " \
+        "WHERE p.user2_id=:user_id AND visible=True GROUP BY p.user1_id"
+
+def search_private_messages(query):
+    sql = "SELECT p.id as message_id, p.content as content, p.user1_id as sender_id, " \
+          "u.name as username, p.timestamp as timestamp " \
+          "FROM private_messages p " \
+          "LEFT JOIN users u ON u.id=p.user1_id " \
+          "WHERE p.content LIKE :query AND p.user2_id=:user_id AND p.visible=True " \
+          "ORDER BY timestamp DESC;"
+    return db.session.execute(sql, {"query":query, "user_id":session["user_id"]}).fetchall()  

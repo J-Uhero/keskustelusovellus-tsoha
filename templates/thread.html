@@ -1,24 +1,34 @@
 {% extends "layout.html" %}
+{% block title %}
+    keskustelu
+{% endblock %}
 {% block content %}
-    {% for m in messages%}
-    <div class=message_info></dic>
-    <p>
-    <a href="/profile/{{m.user_id}}">{{m.name}}</a>
-        lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
-        {% if session.user_id == m.user_id or session.admin %}
-        <form action="/forum/{{topic_id}}/{{topic_id}}/{{m.message_id}}" method="POST">
-            <input type="submit" name="remove" value=poista>
-            <input type="hidden" name="removed_message_id" value="m.message_id">
-        </form>
-        {% endif %}
-    </p>
-    <div class=message>
-    {{m.content}}
-    </div>
+<div class=message_info>
+    keskustelu: 
+    <a href=/forum/{{info.forum_id}} >{{info.forum}}</a> / 
+    <a href=/forum/{{info.forum_id}}/{{info.topic_id}}>{{info.topic}}</a><br>
 </div>
-    {% endfor %} 
+{% for m in messages%}
 <p>
-    <form action="/forum/{{topic_id}}/{{topic_id}}" method="POST">
+    <form action="/forum/{{info.forum_id}}/{{info.topic_id}}/{{m.message_id}}" method="POST">
+        <div class=message_info></dic>
+            <p>
+                <a href="/profile/{{m.user_id}}">{{m.name}}</a>
+                lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
+                {% if session.user_id == m.user_id or session.admin %}
+                <input type="submit" name="remove" value=poista>
+                <input type="hidden" name="removed_message_id" value="m.message_id">
+                {% endif %}
+            </p>
+            <div class=message>
+                {{m.content}}
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+</p> 
+<p>
+    <form action="/forum/{{info.forum_id}}/{{info.topic_id}}" method="POST">
         <textarea name="message"></textarea><br>
         <input type="submit" name="send" value="Lähetä">
     </form>

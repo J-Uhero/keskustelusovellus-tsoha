@@ -3,14 +3,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <body>
-    <title>keskustelusovellus - {% block title %}{% endblock %}</title>
+    <title>Freaks & Geaks -foorumi - {% block title %}{% endblock %}</title>
+    <img src="/static/fng-logo4.png">
 
-    <div class=header>
-        <h1>Keskustelusovellus</h1>
-    </div>
+    {% if session.user_id %}
     <div class=logged>
-        <h3>Kirjautunut: {{session.username}}</h2>
+        Kirjautunut: {{session.username}}
     </div>
+    {% endif %}
+
     <nav>
         <ul>
             {% if session.username %}
@@ -31,7 +32,4 @@
     <hr>
     {% block content %}{% endblock %}
     <hr>
-    <div class=logged>
-        Kirjautunut: {{session.username}}
-    </div>
 </body>
