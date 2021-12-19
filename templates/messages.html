@@ -7,17 +7,17 @@
 {% for m in messages %}
 <p>
     <div class=message_info>
-        Viimeisin viesti: {{m.viimeisin.strftime("%d.%m.%Y %H:%M:%S")}}<br>
-        Lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
-        Viestejä näkemättä: {{m.not_seen}}<br>
-        Viestejä yhteensä: {{m.count}}<br>
-        <a href="/conversation/{{m.contact_id}}">Keskusteluun</a><br>
+        viimeisin viesti: {{m.viimeisin.strftime("%d.%m.%Y %H:%M:%S")}}<br>
+        lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
+        viestejä näkemättä: {{m.not_seen}}<br>
+        viestejä yhteensä: {{m.count}}<br>
+        <a href="/conversation/{{m.contact_id}}">keskusteluun</a><br>
     </div>
 </p>
 {% endfor %}
 {% else %}
 <p>
-    Sinulle ei ole viestejä. Voit lähettää viestejä  
+    Sinulle ei ole vielä saapuneita viestejä. Voit lähettää viestejä  
     <a href="/contacts">yhteystietoihisi</a> lisätyille käyttäjille.
 </p>
 {% endif %}

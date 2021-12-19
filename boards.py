@@ -8,7 +8,6 @@ def get_forums():
         "WHERE f.visible=TRUE " \
         "GROUP BY f.id " \
         "ORDER BY f.topic;"
-
     return db.session.execute(sql).fetchall()
 
 def get_forum_info(id):
@@ -63,10 +62,11 @@ def create_new_topic(topic, forum_id):
     return True
 
 def get_thread(topic_id):
-    sql = "SELECT m.id as message_id, u.id as user_id, u.name, m.content, m.timestamp " \
-          "FROM messages m, users u " \
-          "WHERE m.topic_id=:topic_id AND u.id=m.user_id AND m.visible=TRUE " \
-          "ORDER BY m.timestamp;"
+    sql = "SELECT m.id as message_id, u.id as user_id, u.name, " \
+        "m.content, m.timestamp " \
+        "FROM messages m, users u " \
+        "WHERE m.topic_id=:topic_id AND u.id=m.user_id AND m.visible=TRUE " \
+        "ORDER BY m.timestamp;"
     return db.session.execute(sql, {"topic_id":topic_id}).fetchall()
 
 def remove_forum(forum_id):
@@ -126,5 +126,5 @@ def search_messages_from_forums(entry):
         "LEFT JOIN topics t ON t.id=m.topic_id AND t.visible=True " \
         "LEFT JOIN forums f ON f.id=t.forum_id AND f.visible=True " \
         "WHERE m.content LIKE :entry AND m.visible=True " \
-        "ORDER BY timestamp DESC;"
+        "ORDER BY timestamp DESC LIMIT 30;"
     return db.session.execute(sql, {"entry":entry}).fetchall()

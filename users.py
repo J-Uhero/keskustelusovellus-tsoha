@@ -49,11 +49,12 @@ def count_users_messages(id):
         "ON m.user_id=:id AND m.visible=True " \
         "WHERE u.id=:id " \
         "GROUP BY u.id;"
-    count = db.session.execute(sql, {"user_id":session["user_id"], "id":id}).fetchone()
+    count = db.session.execute(sql, {"user_id":session["user_id"],
+                                     "id":id}).fetchone()
     return count
 
 def search_user_by_name(name):
-    sql = "SELECT id, name FROM users WHERE name LIKE :name;"
+    sql = "SELECT id, name FROM users WHERE name LIKE :name ORDER BY name LIMIT 30;"
     return db.session.execute(sql, {"name":name}).fetchall()
 
 def freeze_user(id):
@@ -65,10 +66,6 @@ def activate_user(id):
     sql = "UPDATE users SET active=True WHERE id=:id;"
     db.session.execute(sql, {"id":id})
     db.session.commit()
-
-def check_if_user_is_freezed(id):
-    sql = "SELECT active FROM users WHERE id=:id;"
-    return db.session.execute(sql, {"id":id}).fetchone()[0]
 
 def get_username(id):
     sql = "SELECT id as id, name as username FROM users WHERE id=:id;"

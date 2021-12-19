@@ -128,7 +128,6 @@ def profile(id):
         if "restore_user" in request.form and session["admin"]:
             users.activate_user(id)
         if "give_admin_rights" in request.form and session["admin"]:
-            print("admin rights", id)
             users.give_admin_rights(id)
         return redirect(f"/profile/{id}")
 
