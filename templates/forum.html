@@ -22,6 +22,7 @@
                     <input type="hidden" name="remove_id" value={{forum.id}}>
                     <input type="submit" name="remove" value="poista">
                     <input type="hidden" name="id" value="{{ id }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 </form>
             </td>
             {% endif %}
@@ -43,6 +44,7 @@
     <form action="/forum" method="POST">
         <input type="text" name="main_topic" size="20"><br>
         <input type="submit" name="new" value="luo">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
     {% endif %}
 </p>

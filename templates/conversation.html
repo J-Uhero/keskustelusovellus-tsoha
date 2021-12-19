@@ -3,6 +3,9 @@
     keskustelu
 {% endblock %}
 {% block content %}
+<div class="message_info">
+    keskustelu käyttäjän <a href="/profile/{{contact.id}}">{{contact.username}}</a> kanssa
+</div>
     {% for m in messages %}
     <p>
         <div class=message_info>
@@ -17,9 +20,10 @@
 
     {% endfor %}
     <p>
-        <form action="/conversation/{{contact_id}}" method="POST">
+        <form action="/conversation/{{contact.id}}" method="POST">
             <textarea name="message"></textarea><br>
             <input type="submit" name="send" value="Lähetä">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </form>
     </p>
 {% endblock %}

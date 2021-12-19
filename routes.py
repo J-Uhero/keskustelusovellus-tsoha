@@ -2,7 +2,7 @@ from app import app
 import boards
 import contact_repository
 import conversation_repository
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 import users
 
 @app.route("/")
@@ -47,10 +47,12 @@ def logout():
 @app.route("/forum", methods=["GET", "POST"])
 def forum():
     forums = boards.get_forums()
-    #print(forums)
     if request.method == "GET":
         return render_template("forum.html", forums=forums)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+
+            abort(403)
         if "new" in request.form:
             main_topic = request.form["main_topic"]
             if boards.validate_topic_name(main_topic):
@@ -69,8 +71,11 @@ def topics(id):
                                topics=topics,
                                info=info)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         if "add" in request.form:
             sub_topic = request.form["sub_topic"]
+            print("sub_t", sub_topic)
             if boards.validate_topic_name:
                 boards.create_new_topic(sub_topic, id)
         if "remove" in request.form:
@@ -87,6 +92,8 @@ def thread(id, id2):
                                 messages=messages,
                                 info=info)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         if "send" in request.form:
             content = request.form["message"]
             boards.create_new_message(content, id2)
@@ -95,17 +102,14 @@ def thread(id, id2):
             boards.remove_message(choice_id)
         return redirect(f"/forum/{id}/{id2}")
 
-@app.route("/forum/<int:id>/<int:id2>/<int:message_id>", methods=["POST"])
-def remove_message(id, id2, message_id):
-    boards.remove_message(message_id)
-    return redirect(f"/forum/{id}/{id2}")
-
 @app.route("/profile/<int:id>", methods=["GET", "POST"])
 def profile(id):
     if request.method == "GET":
         profile = users.count_users_messages(id)
         return render_template("profile.html", profile=profile)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         if "add_contact" in request.form:
             contact_repository.create_contact(id)
         if "remove_contact" in request.form:
@@ -126,10 +130,13 @@ def conversation(id):
     if request.method == "GET":
         messages = conversation_repository.get_conversation(id)
         conversation_repository.update_messages_as_seen(id)
+        contact = users.get_username(id)[0]
         return render_template("conversation.html",
                                messages=messages,
-                               contact_id=id)
+                               contact=contact)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         message = request.form["message"]
         conversation_repository.add_private_message(id, message)
         return redirect(f"/conversation/{id}")
@@ -167,4 +174,3 @@ def search():
                            search_type=search_type,
                            searched=searched,
                            found=found)
-

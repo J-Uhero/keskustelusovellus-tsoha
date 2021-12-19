@@ -29,6 +29,7 @@
                     <input type="hidden" name="remove_id" value={{topic.id}}>
                     <input type="submit" name="remove" value="poista">
                     <input type="hidden" name="id" value={{ id }}>
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     </form>
                 </td>
                 {% endif %}
@@ -40,9 +41,10 @@
 <p>
     {% if session.username %}
     Luo uusi keskustelu<br>
-    <form action="/forum/{{forum_id}}" method="POST">
+    <form action="/forum/{{info.id}}" method="POST">
         <input type="text" name="sub_topic" size="20"><br>
         <input type="submit" name="add" value="luo">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
     {{message}}
     {% endif %}

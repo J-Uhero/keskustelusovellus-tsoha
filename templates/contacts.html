@@ -3,11 +3,16 @@
     yhteystiedot
 {% endblock %}
 {% block content %}
-
-    <ul>
+{% if contacts|length > 0 %}
+<ul>
     {% for c in contacts %}
     <li><a href="/profile/{{c.contact_id}}">{{c.username}}</a><br>
     {% endfor %}
-    </ul>   
+</ul>
+{% else %}
+Sinulla ei ole vielä yhteystietoja. Voit lisätä muita käyttäjiä yhteystietoihisi
+heidä profiilisivuiltaan, joita voit etsiä <a href="/search">hakutoiminnolla</a>
+tai <a href="/forum">keskusteluista</a>.
+{% endif %}
 
 {% endblock %}

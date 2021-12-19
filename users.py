@@ -1,6 +1,8 @@
 from db import db
 from flask import session
+import secrets
 from werkzeug.security import check_password_hash, generate_password_hash
+
 
 def login(name, password):
     sql = "SELECT id, name, password, admin FROM users WHERE name=:name;"
@@ -13,6 +15,7 @@ def login(name, password):
             session["user_id"] = user[0]
             session["username"] = user[1]
             session["admin"] = user[3]
+            session["csrf_token"] = secrets.token_hex(16)
             return True
         else:
             return False
@@ -21,6 +24,8 @@ def logout():
     del session["user_id"]
     del session["username"]
     del session["admin"]
+    del session["csrf_token"]
+
 
 def register(name, password):
     hash_value = generate_password_hash(password)
@@ -69,3 +74,7 @@ def activate_user(id):
 def check_if_user_is_freezed(id):
     sql = "SELECT visible FROM users WHERE id=:id;"
     return db.session.execute(sql, {"id":id}).fetchone()[0]
+
+def get_username(id):
+    sql = "SELECT id as id, name as username FROM users WHERE id=:id;"
+    return db.session.execute(sql, {"id":id}).fetchall()

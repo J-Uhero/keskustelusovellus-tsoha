@@ -3,6 +3,7 @@ body {
     margin: 2em 10%;
     max-width: 40em;
     font-family: 'Helvetica', 'Arial', sans-serif;
+    line-height: 1.5;
 }
 
 nav li {
@@ -40,18 +41,16 @@ nav li {
 }
 
 table {
-    font-family: arial, sans-serif;
+    font-family: helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    background-color: #eec0d7;
   }
   
   td, th {
-    border: 1px solid #f368a2;
+    border: 2px solid #dbaacd;
     text-align: left;
-    padding: 8px;
+    padding: 1em;
   }
   
-  tr:nth-child(even) {
-    background-color: #ff97c2;
-  }
 

@@ -12,7 +12,7 @@
 <p>
     <form action="/forum/{{info.forum_id}}/{{info.topic_id}}" method="POST">
         <div class=message_info>
-            <p>
+
                 <a href="/profile/{{m.user_id}}">{{m.name}}</a>
                 lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
                 {% if session.user_id == m.user_id or session.admin %}
@@ -20,9 +20,10 @@
                     <input type="hidden" name="remove_id" value={{m.message_id}}>
                     <input type="submit" name="remove" value="poista">
                     <input type="hidden" name="id" value={{ message_id }}>
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 </form>
                 {% endif %}
-            </p>
+            <p>
             <div class=message>
                 {{m.content}}
             </div>
@@ -35,6 +36,7 @@
     <form action="/forum/{{info.forum_id}}/{{info.topic_id}}" method="POST">
         <textarea name="message"></textarea><br>
         <input type="submit" name="send" value="Lähetä">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
     {% else %}
     sinulla ei ole käyttöoikeutta

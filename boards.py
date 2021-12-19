@@ -52,6 +52,7 @@ def update_forum_to_visible(topic):
         return False
 
 def create_new_topic(topic, forum_id):
+
     sql = "INSERT INTO topics (topic, forum_id, timestamp, visible) " \
         "VALUES (:topic, :forum_id, NOW(), TRUE);"
     try:

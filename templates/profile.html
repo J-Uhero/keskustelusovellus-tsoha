@@ -30,6 +30,7 @@
 {% elif session.admin and session.user_id != profile.id %}
     <input type=submit name="restore_user" value="palauta käyttäoikeus">
 {% endif %}
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 </p>
 {% endblock %}
