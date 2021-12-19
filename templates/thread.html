@@ -41,8 +41,10 @@
             <a href="/forum/{{info.forum_id}}">palaa takaisin</a>
         </div>
     </form>
-
     {% else %}
+    <div class=return_link>
+        <a href="/forum/{{info.forum_id}}">palaa takaisin</a>
+    </div>
     sinulla ei ole käyttöoikeutta
     {% endif %}
 </p>
