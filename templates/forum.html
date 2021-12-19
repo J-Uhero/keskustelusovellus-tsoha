@@ -31,14 +31,6 @@
     </tbody>
 </table>
 <p>
-    Foorumin aihealueet:
-</p>
-<ul>
-{% for forum in forums %}
-<li>    <a href="/forum/{{ forum.id }}"> {{forum.topic}} </a> <br>
-{% endfor %}
-</ul>
-<p>
     {% if session.username %}<br>
     Luo uusi aihealue<br>
     <form action="/forum" method="POST">

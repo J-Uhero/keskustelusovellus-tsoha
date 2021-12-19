@@ -6,10 +6,28 @@ body {
     line-height: 1.5;
 }
 
+nav ul {
+    margin: .5em;
+    text-align: center;
+}
+
+
 nav li {
     display: inline-block;
     padding: 0 .5em;
+    border-radius: .5em;
 }
+
+nav li a {
+    text-decoration: none;
+    color: #6e4b96;
+}
+
+nav li:hover {
+    background-color: rgb(221, 171, 236);
+}
+
+
 
 .header {
     background: rgb(238, 136, 120);
@@ -21,9 +39,10 @@ nav li {
 
 .logged {
     background: rgb(238, 161, 174);
-    padding: 1em 1em;
-    font-size: 1.2em;
+    padding: .3em .3em;
+    font-size: 1.0em;
     border-radius: .2em;
+    max-width: fit-content
 }
 
 .message_info {

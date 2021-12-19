@@ -34,7 +34,7 @@ Etsi
                 foorumi: <a href="/forum/{{r.forum_id}}">{{r.forum}}</a> 
                 keskustelu: <a href="/profile/{{r.forum_id}}/{{r.topic_id}}">{{r.topic}}</a><br>
                 käyttäjä: <a href="/profile/{{r.user_id}}">{{r.username}}</a> 
-                aika: {{r.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+                aika: {{r.timestamp.strftime("%d.%m.%Y %H:%M:%S")}}<br>
                 <p>{{r.content}}
             </li>
         {% endfor %}
@@ -45,7 +45,7 @@ Etsi
         {% for r in results %}
         <li>
             käyttäjä: <a href="/profile/{{r.user_id}}">{{r.username}}</a> 
-            aika: {{r.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+            aika: {{r.timestamp.strftime("%d.%m.%Y %H:%M:%S")}}<br>
             <a href="/conversation/{{r.sender_id}}">keskustelu</a>
             <p>{{r.content}}
         </li>

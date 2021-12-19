@@ -6,11 +6,13 @@
 {% if messages|length > 0 %}
 {% for m in messages %}
 <p>
-    Viimeisin viesti: {{m.viimeisin.strftime("%Y-%m-%d %H:%M:%S")}}<br>
-    Lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
-    Viestejä näkemättä: {{m.not_seen}}<br>
-    Viestejä yhteensä: {{m.count}}<br>
-    <a href="/conversation/{{m.contact_id}}">Keskusteluun</a><br>
+    <div class=message_info>
+        Viimeisin viesti: {{m.viimeisin.strftime("%d.%m.%Y %H:%M:%S")}}<br>
+        Lähettäjä: <a href="/profile/{{m.contact_id}}">{{m.name}}</a><br>
+        Viestejä näkemättä: {{m.not_seen}}<br>
+        Viestejä yhteensä: {{m.count}}<br>
+        <a href="/conversation/{{m.contact_id}}">Keskusteluun</a><br>
+    </div>
 </p>
 {% endfor %}
 {% else %}

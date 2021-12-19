@@ -51,7 +51,6 @@ def forum():
         return render_template("forum.html", forums=forums)
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
-
             abort(403)
         if "new" in request.form:
             main_topic = request.form["main_topic"]
@@ -75,8 +74,7 @@ def topics(id):
             abort(403)
         if "add" in request.form:
             sub_topic = request.form["sub_topic"]
-            print("sub_t", sub_topic)
-            if boards.validate_topic_name:
+            if boards.validate_topic_name(sub_topic):
                 boards.create_new_topic(sub_topic, id)
         if "remove" in request.form:
             choice_id = request.form["remove_id"]
@@ -96,7 +94,8 @@ def thread(id, id2):
             abort(403)
         if "send" in request.form:
             content = request.form["message"]
-            boards.create_new_message(content, id2)
+            if boards.validate_message(content):
+                boards.create_new_message(content, id2)
         if "remove" in request.form:
             choice_id = request.form["remove_id"]
             boards.remove_message(choice_id)
@@ -118,6 +117,9 @@ def profile(id):
             users.freeze_user(id)
         if "restore_user" in request.form and session["admin"]:
             users.activate_user(id)
+        if "give_admin_rights" in request.form and session["admin"]:
+            print("admin rights", id)
+            users.give_admin_rights(id)
         return redirect(f"/profile/{id}")
 
 @app.route("/contacts")
@@ -138,7 +140,8 @@ def conversation(id):
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         message = request.form["message"]
-        conversation_repository.add_private_message(id, message)
+        if boards.validate_message(message):
+            conversation_repository.add_private_message(id, message)
         return redirect(f"/conversation/{id}")
 
 @app.route("/messages", methods=["GET"])

@@ -10,7 +10,7 @@
     Käyttäjä:
     {% endif %}
     {{ profile.name}} <br>
-    Luotu: {{profile.created_at.strftime("%Y-%m-%d %H:%M:%S")}}<br>
+    Luotu: {{profile.created_at.strftime("%d.%m.%Y %H:%M:%S")}}<br>
     Viestejä: {{profile.count}} kpl<br>
 </p>
 <p>
@@ -24,12 +24,18 @@
     </p>
     <input type="submit" name="remove_contact" value="poista yhteystiedoista">
     {% endif %}
-{% endif %}
-{% if session.admin and session.user_id != profile.id and profile.active %}
+    {% endif %}
+    {% if session.admin and session.user_id != profile.id and profile.active %}
+    <p>
     <input type="submit" name="remove_user" value="poista käyttöoikeus">
-{% elif session.admin and session.user_id != profile.id %}
+    {% elif session.admin and session.user_id != profile.id %}
+    <p>
     <input type=submit name="restore_user" value="palauta käyttäoikeus">
-{% endif %}
+    {% endif %}
+    {% if session.admin and profile.active and profile.admin == False %}
+    <p>
+    <input type="submit" name="give_admin_rights" value="anna ylläpito-oikeudet">
+    {% endif %}
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 </p>

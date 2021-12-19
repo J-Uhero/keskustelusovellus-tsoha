@@ -14,7 +14,7 @@
         <div class=message_info>
 
                 <a href="/profile/{{m.user_id}}">{{m.name}}</a>
-                lähetetty: {{m.timestamp.strftime("%Y-%m-%d %H:%M:%S")}}
+                lähetetty: {{m.timestamp.strftime("%d.%m.%Y %H:%M:%S")}}
                 {% if session.user_id == m.user_id or session.admin %}
                 <form action="/forum/{{info.forum_id}}/{{info.topic_id}}" method="POST">
                     <input type="hidden" name="remove_id" value={{m.message_id}}>

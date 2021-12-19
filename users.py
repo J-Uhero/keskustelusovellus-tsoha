@@ -3,7 +3,6 @@ from flask import session
 import secrets
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
 def login(name, password):
     sql = "SELECT id, name, password, admin FROM users WHERE name=:name;"
     result = db.session.execute(sql, {"name":name})
@@ -26,7 +25,6 @@ def logout():
     del session["admin"]
     del session["csrf_token"]
 
-
 def register(name, password):
     hash_value = generate_password_hash(password)
     if validate(name, password):
@@ -42,7 +40,7 @@ def register(name, password):
     return False
 
 def validate(name, password):
-    return len(name) > 1 and len(password) > 4
+    return 20 >= len(name) > 1 and len(password) > 6
 
 def count_users_messages(id):
     sql = "SELECT u.timestamp as created_at, u.id as id, u.visible as active, " \
@@ -78,3 +76,8 @@ def check_if_user_is_freezed(id):
 def get_username(id):
     sql = "SELECT id as id, name as username FROM users WHERE id=:id;"
     return db.session.execute(sql, {"id":id}).fetchall()
+
+def give_admin_rights(id):
+    sql = "UPDATE users SET admin=True WHERE id=:id;"
+    db.session.execute(sql, {"id":id})
+    db.session.commit()
