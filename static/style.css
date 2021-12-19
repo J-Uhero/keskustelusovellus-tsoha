@@ -27,7 +27,15 @@ nav li:hover {
     background-color: rgb(221, 171, 236);
 }
 
+a {
+    color: rgb(150, 47, 68);
+    text-decoration: none;
 
+}
+
+hr {
+    border: 1px solid #dbaacd;
+}
 
 .header {
     background: rgb(238, 136, 120);
@@ -38,11 +46,25 @@ nav li:hover {
 }
 
 .logged {
-    background: rgb(238, 161, 174);
-    padding: .3em .3em;
+    font-size: 0.9em;
+    color: #be94b2;
+}
+
+.info_link{
+    font-size: 0.9em;
+    color: #be94b2;
+    display: block;
+    float: right;
+}
+
+.info_link a{
     font-size: 1.0em;
-    border-radius: .2em;
-    max-width: fit-content
+    color: #be94b2;
+}
+
+.logged a{
+    font-size: 0.9em;
+    color: #be94b2;
 }
 
 .message_info {
@@ -57,6 +79,16 @@ nav li:hover {
     padding: 1em 1em;
     font-size: 1em;
     border-radius: .5em;
+}
+
+.menu {
+    background-color: #eec0d7;
+    border: 2px solid #dbaacd;
+}
+
+.return_link{
+    display: block;
+    float: right;
 }
 
 table {

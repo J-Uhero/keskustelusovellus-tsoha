@@ -4,7 +4,7 @@ CREATE TABLE users (
     password TEXT,
     admin BOOLEAN,
     timestamp TIMESTAMP,
-    visible BOOLEAN
+    active BOOLEAN
 );
 
 CREATE TABLE forums (

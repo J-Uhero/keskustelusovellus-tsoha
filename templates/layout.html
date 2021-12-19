@@ -4,32 +4,36 @@
 
 <body>
     <title>Freaks & Geaks -foorumi - {% block title %}{% endblock %}</title>
-    <img src="/static/fng-logo4.png">
+    <img src="/static/fng-logo.png">
 
-    {% if session.user_id %}
-    <div class=logged>
-        Kirjautunut: {{session.username}}
+    <div class=menu>
+        <nav>
+            <ul>
+                {% if session.username %}
+                <li><a href="/">Etusivu</a></li>
+                <li><a href="/profile/{{session.user_id}}">Profiili</a></li>
+                <li><a href="/forum">Foorumi</a></li>
+                <li><a href="/contacts">Yhteystiedot</a></li> 
+                <li><a href="/messages">Viestit</a></li>
+                <li><a href="/search">Etsi</a></li>
+                <li><a href="/logout">Kirjaudu ulos</a></li>
+                {% else %}
+                <li><a href="/">Etusivu</a></li>
+                <li><a href="/login"> Kirjaudu sisään </a></li>
+                <li><a href="/register"> Luo käyttäjätunnus </a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
-    {% endif %}
-
-    <nav>
-        <ul>
-            {% if session.username %}
-            <li><a href="/">Etusivu</a></li>
-            <li><a href="/profile/{{session.user_id}}">Profiili</a></li>
-            <li><a href="/forum">Foorumi</a></li>
-            <li><a href="/contacts">Yhteystiedot</a></li> 
-            <li><a href="/messages">Viestit</a></li>
-            <li><a href="/search">Etsi</a></li>
-            <li><a href="/logout">Kirjaudu ulos</a></li>
-            {% else %}
-            <li><a href="/">Etusivu</a></li>
-            <li><a href="/login"> Kirjaudu sisään </a></li>
-            <li><a href="/register"> Luo käyttäjätunnus </a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <hr>
+    <p>
     {% block content %}{% endblock %}
     <hr>
+    <div class=logged>
+        {% if session.user_id %}
+        Kirjautunut: {{session.username}}
+        {% endif %}
+        <div class=info_link>
+            <a href="/info">info</a>
+        </div>
+    </div>
 </body>

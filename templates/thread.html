@@ -34,10 +34,14 @@
 <p>
     {% if info.active %}
     <form action="/forum/{{info.forum_id}}/{{info.topic_id}}" method="POST">
-        <textarea name="message"></textarea><br>
+        <textarea name="message" rows="3" cols="45"></textarea><br>
         <input type="submit" name="send" value="Lähetä">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <div class=return_link>
+            <a href="/forum/{{info.forum_id}}">palaa takaisin</a>
+        </div>
     </form>
+
     {% else %}
     sinulla ei ole käyttöoikeutta
     {% endif %}

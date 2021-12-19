@@ -17,8 +17,8 @@ def add_private_message(id, content):
 
 def update_messages_as_seen(sender_id):
     try:
-        sql = "UPDATE private_messages SET seen=True \
-            WHERE user1_id=:sender_id AND user2_id=:user_id;"
+        sql = "UPDATE private_messages SET seen=True " \
+            "WHERE user1_id=:sender_id AND user2_id=:user_id;"
         db.session.execute(sql, {"sender_id":sender_id, "user_id":session["user_id"]})
         db.session.commit()
         return True
@@ -38,8 +38,8 @@ def get_private_messages_info():
     return db.session.execute(sql, {"user_id":session["user_id"]}).fetchall()
 
 def count_all_not_seen_messages():
-    sql = "SELECT COUNT(*) FROM private_messages \
-        WHERE user2_id=:user_id AND seen=False AND visible=True;"
+    sql = "SELECT COUNT(*) FROM private_messages " \
+        "WHERE user2_id=:user_id AND seen=False AND visible=True;"
     return db.session.execute(sql, {"user_id":session["user_id"]}).fetchone()[0]
 
 def count_messages(id):
@@ -49,9 +49,9 @@ def count_messages(id):
 
 def search_private_messages(query):
     sql = "SELECT p.id as message_id, p.content as content, p.user1_id as sender_id, " \
-          "u.name as username, p.timestamp as timestamp " \
-          "FROM private_messages p " \
-          "LEFT JOIN users u ON u.id=p.user1_id " \
-          "WHERE p.content LIKE :query AND p.user2_id=:user_id AND p.visible=True " \
-          "ORDER BY timestamp DESC;"
+        "u.name as username, p.timestamp as timestamp " \
+        "FROM private_messages p " \
+        "LEFT JOIN users u ON u.id=p.user1_id " \
+        "WHERE p.content LIKE :query AND p.user2_id=:user_id AND p.visible=True " \
+        "ORDER BY timestamp DESC;"
     return db.session.execute(sql, {"query":query, "user_id":session["user_id"]}).fetchall()  

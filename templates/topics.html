@@ -42,9 +42,12 @@
     {% if session.username %}
     Luo uusi keskustelu<br>
     <form action="/forum/{{info.id}}" method="POST">
-        <input type="text" name="sub_topic" size="20"><br>
+        <input type="text" name="sub_topic" size="30">
         <input type="submit" name="add" value="luo">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <div class="return_link">
+            <a href="/forum">takaisin</a> 
+        </div>
     </form>
     {{message}}
     {% endif %}

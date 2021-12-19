@@ -27,23 +27,20 @@ def logout():
 
 def register(name, password):
     hash_value = generate_password_hash(password)
-    if validate(name, password):
-        try:
-            print("validate")
-            sql = "INSERT INTO users (name, password, admin, timestamp, visible) \
-                VALUES (:name, :password, FALSE, NOW(), TRUE);"
-            db.session.execute(sql, {"name":name, "password":hash_value})
-            db.session.commit()
-            return login(name, password)
-        except Exception:
-            return False
-    return False
+    try:
+        sql = "INSERT INTO users (name, password, admin, timestamp, active) " \
+            "VALUES (:name, :password, FALSE, NOW(), True);"
+        db.session.execute(sql, {"name":name, "password":hash_value})
+        db.session.commit()
+        return login(name, password)
+    except Exception:
+        return False
 
 def validate(name, password):
     return 20 >= len(name) > 1 and len(password) > 6
 
 def count_users_messages(id):
-    sql = "SELECT u.timestamp as created_at, u.id as id, u.visible as active, " \
+    sql = "SELECT u.timestamp as created_at, u.id as id, u.active as active, " \
         "u.name as name, u.admin as admin, count(m.id) as count," \
         ":user_id IN (SELECT user_id FROM contacts " \
         "WHERE user_id=:user_id AND contact_id=:id) as contact "\
@@ -60,17 +57,17 @@ def search_user_by_name(name):
     return db.session.execute(sql, {"name":name}).fetchall()
 
 def freeze_user(id):
-    sql = "UPDATE users SET visible=False WHERE id=:id;"
+    sql = "UPDATE users SET active=False WHERE id=:id;"
     db.session.execute(sql, {"id":id})
     db.session.commit()
 
 def activate_user(id):
-    sql = "UPDATE users SET visible=True WHERE id=:id;"
+    sql = "UPDATE users SET active=True WHERE id=:id;"
     db.session.execute(sql, {"id":id})
     db.session.commit()
 
 def check_if_user_is_freezed(id):
-    sql = "SELECT visible FROM users WHERE id=:id;"
+    sql = "SELECT active FROM users WHERE id=:id;"
     return db.session.execute(sql, {"id":id}).fetchone()[0]
 
 def get_username(id):

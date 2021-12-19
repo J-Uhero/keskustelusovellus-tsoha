@@ -19,7 +19,6 @@ def login():
     if request.method == "POST":
         name = request.form["name"]
         password = request.form["password"]
-
         if users.login(name, password):
             return redirect("/")
         else:
@@ -33,11 +32,22 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        password2 = request.form["password2"]
+        if password != password2:
+            message = "salasanat eivät täsmää"
+            return render_template("register.html",
+                                    message=message)
+        if not users.validate(username, password):
+            message = "salasanan on oltava vähintään 7 " \
+                "merkkiä ja käyttäjänimen 2–20 merkkiä"
+            return render_template("register.html",
+                                    message=message)
         if users.register(username, password):
             return redirect("/")
         else:
+            message="käyttäjänimi ei kelpaa"
             return render_template("register.html",
-                                    message="käyttäjänimi ei kelpaa")
+                                    message=message)
 
 @app.route("/logout")
 def logout():
@@ -177,3 +187,7 @@ def search():
                            search_type=search_type,
                            searched=searched,
                            found=found)
+
+@app.route("/info")
+def info():
+    return render_template("info.html")

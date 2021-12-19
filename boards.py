@@ -25,7 +25,7 @@ def get_topics(id):
 
 def get_forum_and_topic_info(topic_id):
     sql = "SELECT f.id as forum_id, f.topic as forum, t.id as topic_id, " \
-        "t.topic as topic, u.visible as active " \
+        "t.topic as topic, u.active as active " \
         "FROM forums f, topics t, users u " \
         "WHERE f.id=t.forum_id AND t.id=:topic_id AND u.id=:user_id;"
     return db.session.execute(sql, {"topic_id":topic_id,

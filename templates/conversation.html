@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}
-    keskustelu
+keskustelu
 {% endblock %}
 {% block content %}
 <div class="message_info">
@@ -9,21 +9,24 @@
     {% for m in messages %}
     <p>
         <div class=message_info>
-            <p>
             <a href="/profile/{{m.id}}">{{m.name}}</a>
             Lähetetty {{m.timestamp.strftime("%d.%m.%Y %H:%M:%S")}}<br>
+            <p>
+                <div class=message>
+                    {{m.content}}
+                </div>
             </p>
-            <div class=message>
-                {{m.content}}
-            </div>
         </div>
-
+    </p>
     {% endfor %}
     <p>
         <form action="/conversation/{{contact.id}}" method="POST">
-            <textarea name="message"></textarea><br>
+            <textarea name="message" rows="3" cols="45"></textarea><br>
             <input type="submit" name="send" value="Lähetä">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <div class=return_link>
+                <a href="/messages">viesteihin</a>  
+            </div>
         </form>
     </p>
 {% endblock %}
